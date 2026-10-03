@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alpha-loop-jp"
+version = "0.1.0"
+requires-python = ">=3.11"
+description = "Reproducible Japanese equity screening research"
+
+[project.optional-dependencies]
+market-data = ["yfinance==1.7.0", "exchange-calendars==4.13.2", "openpyxl==3.1.5"]
+
+[project.scripts]
+alpha-loop = "alpha_loop.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

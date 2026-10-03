@@ -1,0 +1,19 @@
+{
+  "runtime_config_version": "openjev-rtx5090-local-v1",
+  "base_image_digest": "sha256:53741f5005c81e4d19a8a8d66e717213c173bb11a46aac1147eea1dc9244b854",
+  "local_image": "alpha-loop-openjev:rtx5090-profile-fix",
+  "local_patch": "dummy-sampler-topk50",
+  "model": "nvidia/diffusiongemma-26B-A4B-it-NVFP4",
+  "model_revision": "ec4ff3df205028f4e81c954c2227f9312b3ec2ea",
+  "quantization": "NVFP4",
+  "moe_backend": "marlin",
+  "gpu_memory_utilization": 0.72,
+  "max_model_len": 8192,
+  "max_num_seqs": 1,
+  "max_inflight": 1,
+  "max_images": 0,
+  "warmup": false,
+  "enforce_eager": true,
+  "max_jobs": 2,
+  "host_binding": "127.0.0.1:8080"
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "provider": "file",
+  "input_dir": "demo-input",
+  "strategy_config": "configs/baseline.json",
+  "ranking_return_min": 0.1,
+  "ranking_limit": 50,
+  "qwen_enabled": false,
+  "cloud_enabled": false,
+  "orders_enabled": false
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "mode": "shadow",
+  "provider": "openjev",
+  "input_manifest": "incoming/disclosures/manifest.json",
+  "question_set": "configs/questions_v1.json",
+  "runtime_config": "configs/openjev_runtime_rtx5090_v1.json",
+  "base_url": "http://127.0.0.1:8080",
+  "model_id": "openjev-0.1",
+  "max_documents": 5,
+  "budget_seconds": 600,
+  "cloud_enabled": false,
+  "orders_enabled": false
+}

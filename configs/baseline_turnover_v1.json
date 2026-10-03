@@ -1,0 +1,12 @@
+{
+  "strategy_id": "price_baseline",
+  "strategy_version": "1.0.0",
+  "evaluation_version": "1.0.0",
+  "min_history_sessions": 60,
+  "turnover_median_min_jpy": 100000000,
+  "max_candidates_per_stage": 20,
+  "discovery_hit_threshold": 0.10,
+  "roundtrip_cost_bps": null,
+  "cloud_enabled": false,
+  "orders_enabled": false
+}

@@ -1,0 +1,18 @@
+{
+  "runtime_config_version": "qwen-rtx5090-local-v1",
+  "source_model": "Qwen/Qwen3.8-27B",
+  "quantized_model": "Inferact/Qwen3.8-27B-NVFP4",
+  "model_revision": "6128240ebaf4eaa7bad2b3d1c72c37d677c5f462",
+  "model_source_note": "Third-party NVFP4 conversion of the user-selected Qwen model",
+  "server_image": "alpha-loop-openjev:rtx5090-profile-fix",
+  "server_image_id": "sha256:dd6c974563ba3c3bae24d3080c19cfafa1468d95536fe98c05307064e47f6c0c",
+  "vllm_version": "0.29.1rc1.dev551+g1b3b88ec2.d20260924.precompiled",
+  "max_model_len": 32768,
+  "kv_cache_dtype": "fp8",
+  "enforce_eager": true,
+  "language_model_only": true,
+  "max_num_seqs": 1,
+  "reasoning_parser": "qwen3",
+  "host_binding": "127.0.0.1:8000",
+  "max_jobs": 2
+}

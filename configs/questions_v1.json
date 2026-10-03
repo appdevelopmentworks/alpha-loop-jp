@@ -1,0 +1,11 @@
+{
+  "question_set_version": "materials-ja-v1",
+  "questions": {
+    "material_type": {"type": "choice", "instructions": "資料に明記された主な材料の種類を選ぶ。推測しない。", "criteria": {"contract": "契約・受注", "earnings": "業績・業績予想", "financing": "資金調達・新株発行", "other": "その他の明示的事項", "unknown": "判読不能・根拠不足"}},
+    "contract_stage": {"type": "choice", "instructions": "契約に関する記述の段階を選ぶ。", "criteria": {"formal_contract": "正式契約を締結", "agreement": "基本合意・覚書", "discussion": "協議・検討中", "not_applicable": "契約に関する資料ではない", "unknown": "段階不明"}},
+    "core_business": {"type": "noul", "instructions": "渡された本文に、この案件が発行者の本業に直接関係すると明記されているか。外部知識を使わない。"},
+    "guidance_timing": {"type": "noul", "instructions": "業績見通しへの反映時期が本文に明記されているか。"},
+    "dilution": {"type": "noul", "instructions": "新株発行など既存株主の希薄化が本文に明記されているか。"},
+    "explicit_amount": {"type": "noul", "instructions": "金額が本文に明記されているか。金額の大小は判定しない。"}
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "model": "mock-materials-v1",
+  "answers": {
+    "material_type": {"choice": "contract", "probabilities": {"contract": 1, "earnings": 0, "financing": 0, "other": 0, "unknown": 0}, "confidence": 1},
+    "contract_stage": {"choice": "formal_contract", "probabilities": {"formal_contract": 1, "agreement": 0, "discussion": 0, "not_applicable": 0, "unknown": 0}, "confidence": 1},
+    "core_business": {"noul": 1},
+    "guidance_timing": {"noul": 0},
+    "dilution": {"noul": 0},
+    "explicit_amount": {"noul": 1}
+  },
+  "usage": {"input_tokens": 42, "output_tokens": 0}
+}
