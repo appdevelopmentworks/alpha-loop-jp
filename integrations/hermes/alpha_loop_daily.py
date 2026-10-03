@@ -30,12 +30,13 @@ def main() -> int:
     env["VIRTUAL_ENV"] = str(PROJECT_ROOT / ".venv")
     env.pop("UV_PROJECT_ENVIRONMENT", None)
     env.pop("UV_PYTHON", None)
-    config_path = PROJECT_ROOT / os.environ.get("ALPHA_LOOP_CONFIG", "configs/hermes_operations.json")
+    operation_config = os.environ.get('ALPHA_LOOP_CONFIG', 'configs/hermes_self_improving.json')
+    config_path = PROJECT_ROOT / operation_config
     env["ALPHA_LOOP_OPERATION_CONFIG_HASH"] = digest(config_path.read_bytes())
     env["ALPHA_LOOP_STRATEGY_CONFIG_HASH"] = digest((PROJECT_ROOT / json.loads(config_path.read_text(encoding="utf-8"))["strategy_config"]).read_bytes())
     command = [uv, "run", "--managed-python", "--no-project", "--python", "3.11", "--offline",
                "python", "-m", "alpha_loop.cli", "operate", "--operation-config",
-               os.environ.get("ALPHA_LOOP_CONFIG", "configs/hermes_operations.json")]
+               operation_config]
     if os.environ.get("ALPHA_LOOP_SESSION"):
         command.extend(["--session", os.environ["ALPHA_LOOP_SESSION"]])
     if os.environ.get("ALPHA_LOOP_LIMIT"):

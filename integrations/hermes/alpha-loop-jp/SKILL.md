@@ -8,7 +8,7 @@ description: Alpha Loop JPの日本株研究を取得、候補抽出、翌日評
 Project: the directory specified by `ALPHA_LOOP_ROOT`. Set it explicitly when moving or cloning the project; the wrapper fallback is the current user's `Desktop/alpha-loop-jp`.
 
 Read `docs/18_setup.md`, `docs/19_operations.md` and `data/operations/latest_service.json` for setup and current state. `docs/12_hermes_operation.md` contains the original machine's operation history. Run from the project directory. Python is managed with uv; do not install system Python.
-Read `docs/15_materials_and_weekly.md` for file disclosures, material quality, auxiliary results and weekly review. The existing daily job imports permission-asserted local text, preserves actual first observation, and runs materials in shadow. Missing sources are unknown and require no OpenJev startup. Friday completion produces weekly drafts. Never use protected holdout dates for proposals or claim material previews are validated. Human reviews require an explicit human declaration; do not act as the human approver or enable ACTIVE rules.
+Read `docs/15_materials_and_weekly.md` and `docs/21_hypothesis_loop.md` for disclosures, quality, auxiliary results and the hypothesis loop. The wrapper defaults to `configs/hermes_self_improving.json`; an explicit `ALPHA_LOOP_CONFIG` override is respected. Hypothesis versions emit separate shadow candidates, feedback and preregistered comparisons. Protected holdouts cannot enter proposal input. First production ACTIVE requires explicit human review; never impersonate that reviewer. Later promotion follows the frozen policy and verified prospective M5 report; synthetic/reconstructed evidence cannot enable production. Monitoring can restore the previous version. Missing documents remain unknown and require no OpenJev startup.
 
 ```powershell
 Set-Location $env:ALPHA_LOOP_ROOT
@@ -16,7 +16,7 @@ $env:PYTHONPATH = 'src'
 $env:VIRTUAL_ENV = Join-Path (Get-Location) '.venv'
 $env:UV_CACHE_DIR = Join-Path (Get-Location) '.uv-cache'
 $env:PYTHONIOENCODING = 'utf-8'
-uv run --offline --managed-python --no-project --python 3.11 python -m alpha_loop.cli operate
+uv run --offline --managed-python --no-project --python 3.11 python -m alpha_loop.cli operate --operation-config configs/hermes_self_improving.json
 ```
 
 Use `hermes cron list` to identify the existing Alpha Loop JP daily job, then `hermes cron run <job-id>` when the user asks to run it. Job IDs are local to each installation. Do not create a duplicate job. It is a no-agent job: deterministic Python performs calculations, the standalone local Qwen drafts text. Hermes's conversational provider settings are not changed.

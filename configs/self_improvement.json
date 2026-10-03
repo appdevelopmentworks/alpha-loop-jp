@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "mode": "shadow",
+  "max_versions": 8,
+  "max_new_per_day": 2,
+  "automatic_promotion": true,
+  "tuning_sessions": 10,
+  "holdout_sessions": 30,
+  "criteria": {
+    "stages": ["EARLY", "PREMOVE"], "k_per_stage": 20,
+    "min_days": 30, "min_valid": 200, "min_unique_instruments": 50, "min_event_clusters": 50,
+    "min_hit_rate_improvement": 0.03, "max_unknown_rate": 0.20,
+    "max_capture_drop": 0.05, "min_candidate_retention": 0.50,
+    "confidence": 0.95, "bootstrap_samples": 2000, "seed": 20260930,
+    "max_trials": 10, "purge_sessions": 5, "cost_scenarios_bps": [0, 10, 30, 50]
+  },
+  "monitor": {
+    "window_days": 20, "min_days": 5, "min_selected": 50,
+    "max_unknown_rate": 0.20, "max_hit_rate_drop": 0.05, "max_capture_drop": 0.05
+  }
+}

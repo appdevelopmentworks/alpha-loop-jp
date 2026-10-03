@@ -120,7 +120,9 @@ local設定運用では同じ`--operation-config`も指定する。`--refresh`�
 
 M5は仮説・条件・期間・モデル/質問を事前登録し、未使用期間終了まで保留する。新規cloneには元PCの登録実験は存在しない。元PCの2研究実験は2026-12-01以降、全翌日ラベルが揃ってから比較可能だが、reconstructedのため本番採用の証拠にはしない。
 
-週次新案は下書き。`APPROVE_SHADOW`でも本番条件は変わらず、ACTIVE切替は未実装。採用した人間の名前をAIが代行しない。[価格M5](13_m5_comparison.md) / [材料M5](16_m5_material_comparison.md)。
+週次新案は下書き。`APPROVE_SHADOW`は従来の別版準備だけ。日次の価格仮説のACTIVE・自動監視/復帰は[21の自己改善経路](21_hypothesis_loop.md)で実装し、初回は明示的人手確認が必要。材料B1/B2のACTIVEは別の残工程。採用した人間の名前をAIが代行しない。[価格M5](13_m5_comparison.md) / [材料M5](16_m5_material_comparison.md)。
+
+自己改善付きのHermesラッパーは`configs/hermes_self_improving.json`を既定とする。`ALPHA_LOOP_CONFIG`で従来/local設定を指定している場合はその値を使う。日次JSONの`self_improvement`・`self_improvement_monitor`・`self_improvement_promotion`を確認する。実験WAITING/品質HOLDや未採用は正常な保留。運用候補のファイルは`operational_candidate_csv`で確認し、基準CSVと全仮説版を併記したshadow CSVを取り違えない。
 
 ## 7. バックアップ・更新・移行
 

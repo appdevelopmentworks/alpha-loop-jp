@@ -71,6 +71,8 @@ class LocalQwen:
         if facts.get("report_kind") == "ranking_retrospective":
             max_tokens = 1024
             instruction = '条件カタログから検証するAND条件の仮説を1〜2件選んでください。各仮説の条件IDは1〜3個。しきい値は設計上の仮定であり、性能・因果関係は未検証です。非掲載を非急騰と扱わないでください。同じ特徴の同方向の条件を重ねないでください。返すのは次の形式のJSONのみ。自由文、Markdown、説明、カタログ外の条件は不要です。{"hypotheses":[{"condition_ids":["volume_ge_1_5","near_high_ge_minus_0_05"],"reason_code":"volume_expansion"}]} reason_codeはallowed_reason_codesから選び、各仮説の条件の組合せを変えてください。'
+            if facts.get('learning_feedback') is not None:
+                instruction += ' learning_feedbackの既存仮説・的中・誤検出・見逃しを参考に次の仮説を選んでください。不明は陰性にせず、的中率と捕捉率を両方考慮し、改善が見込めなければ既存条件を再提案して構いません。'
         return self._request("/v1/chat/completions", {
             "model": self.model_id,
             "messages": [
@@ -146,7 +148,7 @@ def qwen_report(root: Path, run_id: str, provider: LocalQwen) -> dict:
     return {"run_id": run_id, "report_path": str(destination), "draft_path": str(markdown), "cache_key": key}
 
 
-def qwen_retrospective_report(root: Path, study_id: str, provider: LocalQwen) -> dict:
+def qwen_retrospective_report(root: Path, study_id: str, provider: LocalQwen, learning_feedback: dict | None = None) -> dict:
     from .retrospective import FEATURE_FIELDS, _verify
     output, manifest, _ = _verify(root, study_id)
     rows = read_json(output / "decisions.json")
@@ -171,9 +173,13 @@ def qwen_retrospective_report(root: Path, study_id: str, provider: LocalQwen) ->
              "limitations": comparison["limitations"], "sample_quality": "少数標本、性能・因果関係は未検証",
              "hypothesis_seed": "前営業日の出来高増加と20日高値への接近が翌営業日の急騰捕捉に役立つか。"}
     facts.update(condition_catalog=CATALOG, catalog_version=CATALOG_VERSION, allowed_reason_codes=list(REASONS))
+    if learning_feedback is not None:
+        if learning_feedback['cutoff_session'] != manifest['ranking_session']:
+            raise ValueError('learning feedback cutoff differs from discovery day')
+        facts['learning_feedback'] = learning_feedback
     if len(canonical(facts)) > 12000:
         raise ValueError("retrospective report facts exceed size limit")
-    identity = {"prompt_version": "ranking-plan-ja-v4", "manifest_hash": digest((output / "study_manifest.json").read_bytes()),
+    identity = {"prompt_version": "ranking-plan-feedback-ja-v1" if learning_feedback is not None else "ranking-plan-ja-v4", "manifest_hash": digest((output / "study_manifest.json").read_bytes()),
                 "code_bundle_id": archive_code(root),
                 "facts_hash": digest(canonical(facts)), "model_id": provider.model_id,
                 "model_revision": provider.model_revision, "runtime_config": provider.runtime_config,

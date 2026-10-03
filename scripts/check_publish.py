@@ -39,11 +39,13 @@ def main():
     audit = PROJECT / 'data/publication_audit' / uuid.uuid4().hex[:12]
     audit.mkdir(parents=True)
     git_dir = audit / 'index.git'
+    empty_config = audit / 'empty_git_config'
+    empty_config.write_bytes(b'')
     env = os.environ.copy()
-    env.update(GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull)
+    env.update(GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=str(empty_config))
 
     def git(*arguments, input_=None):
-        return subprocess.run(['git', '-c', 'core.excludesFile=' + os.devnull, '-c', 'core.autocrlf=false',
+        return subprocess.run(['git', '-c', 'core.excludesFile=' + str(empty_config), '-c', 'core.autocrlf=false',
             '--git-dir=' + str(git_dir), '--work-tree=' + str(PROJECT), *arguments],
             cwd=PROJECT, env=env, input=input_, capture_output=True, check=True).stdout
 

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "provider": "yfinance",
+  "markets": ["Standard", "Growth", "Prime"],
+  "history_calendar_days": 365,
+  "download_workers": 1,
+  "session_ready_hour_jst": 20,
+  "strategy_config": "configs/baseline.json",
+  "ranking_return_min": 0.10,
+  "ranking_limit": 50,
+  "qwen_enabled": true,
+  "materials_config": "configs/materials_operations.json",
+  "weekly_research_enabled": true,
+  "self_improvement_config": "configs/self_improvement.json",
+  "qwen_runtime_config": "configs/qwen_runtime_rtx5090_v1.json",
+  "qwen_model_id": "Inferact/Qwen3.8-27B-NVFP4",
+  "qwen_model_revision": "6128240ebaf4eaa7bad2b3d1c72c37d677c5f462",
+  "cloud_enabled": false,
+  "orders_enabled": false,
+  "purpose": "personal_research",
+  "universe_basis": "latest_jpx_month_end_membership"
+}

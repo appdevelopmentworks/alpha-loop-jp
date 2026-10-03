@@ -95,16 +95,25 @@ def _prior_runs(root: Path, session: str, grade: str) -> list[str]:
     return sorted(runs)
 
 
-def _qwen(root: Path, config: dict, run_id: str, study_id: str | None) -> dict:
+def _qwen(root: Path, config: dict, run_id: str, study_id: str | None, learning_feedback=None, skip_hypotheses=False) -> dict:
     from .model_session import local_model
+    if config.get('self_improvement_config'):
+        from .self_improvement import learning_facts, protected
+        m = _verified_manifest(root / 'outputs' / run_id)
+        snap = _verified_snapshot(root, m['snapshot_id'])
+        session = m['target_session']
+        preceding = snap['data']['calendar'][snap['data']['calendar'].index(session) - 1]
+        skip_hypotheses = skip_hypotheses or protected(root, session) or protected(root, preceding)
+        if learning_feedback is None and not skip_hypotheses:
+            learning_feedback = learning_facts(root, session)
     provider = LocalQwen("http://127.0.0.1:8000", config["qwen_model_id"], config["qwen_model_revision"],
                          read_json(root / config["qwen_runtime_config"]))
     # Daily text and hypothesis responses remain optional side outputs.
     with local_model(root, "qwen", 1200):
         result = {"daily_report": qwen_report(root, run_id, provider)}
-        if study_id:
+        if study_id and not skip_hypotheses:
             try:
-                result["hypotheses"] = qwen_retrospective_report(root, study_id, provider)
+                result["hypotheses"] = qwen_retrospective_report(root, study_id, provider, learning_feedback) if learning_feedback is not None else qwen_retrospective_report(root, study_id, provider)
             except NoHypothesisEvidence as error:
                 result["hypotheses_status"] = "NOT_GENERATED"
                 result["hypotheses_reason"] = str(error)
@@ -209,6 +218,12 @@ def operate(root: Path, config_path: Path, session: str | None = None, limit: in
             if data["source"]["data_grade"] != "synthetic":
                 as_of = now_iso()
             optional_hashes = {}
+            loop_config = config.get('self_improvement_config')
+            if loop_config:
+                from .self_improvement import settings
+                if settings(root / loop_config)['mode'] != 'shadow':
+                    raise ValueError('native operations cannot use simulation policy')
+                optional_hashes[loop_config] = digest((root / loop_config).read_bytes())
             if material_config and (root / material_config).exists():
                 optional_hashes[material_config] = digest((root / material_config).read_bytes())
                 try:
@@ -264,7 +279,8 @@ def operate(root: Path, config_path: Path, session: str | None = None, limit: in
                     future_dir = root / "data" / "operations" / "evaluation_inputs" / service_key / earlier
                     future = _future(root, earlier, data, session, future_dir)
                     evaluation = evaluate_run(root, earlier, future, session)
-                    result["evaluations"].append({"source_run_id": earlier, "outcomes_csv": str(Path(evaluation["path"]) / "outcomes.csv")})
+                    result["evaluations"].append({"source_run_id": earlier, "outcomes_csv": str(Path(evaluation["path"]) / "outcomes.csv"),
+                                                 "evaluation_id": evaluation['evaluation_id'], 'future_ref': str((future / 'future.json').relative_to(root))})
                 ranking = derive_ranking(root, input_dir, session, config["ranking_return_min"], config["ranking_limit"])
                 result["ranking_csv"] = str(Path(ranking["ranking_input"]) / "ranking.csv")
                 result["ranking_count"] = ranking["ranking_count"]
@@ -288,11 +304,22 @@ def operate(root: Path, config_path: Path, session: str | None = None, limit: in
                 except Exception as error:
                     result["materials"] = {"status": "FAILED", "error": str(error)[:500]}
                 result["material_import"] = material_import
+                learning_feedback, skip_hypotheses = None, False
+                if loop_config:
+                    try:
+                        from .self_improvement import feedback, learning_facts, protected
+                        entries = [{'run_id': e['source_run_id'], 'evaluation_id': e.get('evaluation_id', Path(e['outcomes_csv']).parent.name),
+                                    'future_ref': e['future_ref']} for e in result['evaluations'] if e.get('future_ref')]
+                        feedback(root, entries, session)
+                        skip_hypotheses = protected(root, session) or protected(root, data['calendar'][data['calendar'].index(session) - 1])
+                        learning_feedback = learning_facts(root, session)
+                    except Exception as error:
+                        result['self_improvement'] = {'status': 'FAILED', 'error': str(error)[:500]}
                 if config["qwen_enabled"] and not no_ai:
                     attempt["phase"] = "LOCAL_QWEN"
                     write_json(attempt_path, attempt)
                     try:
-                        result["qwen"] = _qwen(root, config, run_id, study["study_id"])
+                        result["qwen"] = _qwen(root, config, run_id, study["study_id"], learning_feedback, skip_hypotheses) if loop_config else _qwen(root, config, run_id, study["study_id"])
                         result["qwen_status"] = "SUCCEEDED"
                     except Exception as error:
                         result.update(qwen_status="FAILED", qwen_error=str(error)[:500])
@@ -359,6 +386,22 @@ def operate(root: Path, config_path: Path, session: str | None = None, limit: in
             except Exception as error:
                 result["material_m5"] = {"status": "FAILED", "error": str(error)[:500], "experiments": []}
             write_json(job_path, result)
+            if loop_config:
+                attempt['phase'] = 'SELF_IMPROVEMENT'
+                write_json(attempt_path, attempt)
+                try:
+                    from .self_improvement import day as hypothesis_day, feedback, monitor, promote_ready
+                    entries = [{'run_id': e['source_run_id'], 'evaluation_id': e.get('evaluation_id', Path(e['outcomes_csv']).parent.name),
+                                'future_ref': e['future_ref']} for e in result['evaluations'] if e.get('future_ref')]
+                    feedback(root, entries, session)
+                    # On AI retry the first sealed forecast is reused; never replace its selections.
+                    result['self_improvement_monitor'] = monitor(root, root / loop_config, session)
+                    result['self_improvement_promotion'] = promote_ready(root, root / loop_config)
+                    report = result.get('qwen', {}).get('hypotheses', {}).get('report_path') if result.get('qwen_status') == 'SUCCEEDED' else None
+                    result['self_improvement'] = hypothesis_day(root, run_id, root / loop_config, Path(report) if report else None)
+                    result['operational_candidate_csv'] = result['self_improvement']['operational_candidate_csv']
+                except Exception as error:
+                    result['self_improvement'] = {'status': 'FAILED', 'error': str(error)[:500]}
             if config.get("weekly_research_enabled", False):
                 attempt["phase"] = "WEEKLY_DRAFTS"
                 write_json(attempt_path, attempt)
@@ -367,12 +410,14 @@ def operate(root: Path, config_path: Path, session: str | None = None, limit: in
                     result["weekly"] = weekly(root, session)
                 except Exception as error:
                     result["weekly"] = {"status": "FAILED", "error": str(error)[:500]}
-            side_failures = [name for name in ("materials", "material_import", "weekly", "material_m5") if result.get(name, {}).get("status") == "FAILED"]
+            side_failures = [name for name in ("materials", "material_import", "weekly", "material_m5", "self_improvement") if result.get(name, {}).get("status") == "FAILED"]
             if result.get("auxiliary_status") == "FAILED":
                 side_failures.append("auxiliary")
             result["side_failures"] = side_failures
             if side_failures and result["qwen_status"] != "FAILED" and result["m5"]["status"] != "FAILED":
                 result["status"] = "SUCCEEDED_WITH_SIDE_FAILURE"
+            elif not side_failures and result['status'] == 'SUCCEEDED_WITH_SIDE_FAILURE':
+                result['status'] = 'SUCCEEDED_WITH_AI_FAILURE' if result['qwen_status'] == 'FAILED' else 'SUCCEEDED_WITH_M5_FAILURE' if result['m5']['status'] == 'FAILED' else 'SUCCEEDED_WITH_GAPS' if result['missing_target_count'] else 'SUCCEEDED'
             write_json(job_path, result)
             write_json(root / "data" / "operations" / "latest_service.json", result)
             attempt.update(phase="COMPLETE", result=result, status=result["status"], completed_at=now_iso())

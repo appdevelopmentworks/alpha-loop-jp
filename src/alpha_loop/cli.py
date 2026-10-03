@@ -25,6 +25,25 @@ def main() -> None:
     p.add_argument("--root", type=Path, default=Path.cwd())
     sub = p.add_subparsers(dest="command", required=True)
     sub.add_parser("operation-status")
+    sub.add_parser('self-improve-status')
+    sd = sub.add_parser('self-improve-day')
+    sd.add_argument('--run-id', required=True)
+    sd.add_argument('--policy', type=Path, default=Path('configs/self_improvement.json'))
+    sd.add_argument('--report', type=Path)
+    sf = sub.add_parser('self-improve-feedback')
+    sf.add_argument('--batch', type=Path, required=True)
+    sf.add_argument('--session', required=True)
+    sa = sub.add_parser('self-improve-activate')
+    sa.add_argument('--experiment-id', required=True)
+    sa.add_argument('--policy', type=Path, default=Path('configs/self_improvement.json'))
+    sa.add_argument('--reviewer', required=True)
+    sa.add_argument('--human-reviewed', action='store_true')
+    sm = sub.add_parser('self-improve-monitor')
+    sm.add_argument('--session', required=True)
+    sm.add_argument('--policy', type=Path, default=Path('configs/self_improvement.json'))
+    sb = sub.add_parser('self-improve-rollback')
+    sb.add_argument('--reason', required=True)
+    sb.add_argument('--policy', type=Path, default=Path('configs/self_improvement.json'))
     mm = sub.add_parser("m5-material-demo")
     mm.add_argument("--out", type=Path, required=True)
     mm.add_argument("--baseline-config", type=Path, default=Path("configs/baseline.json"))
@@ -196,6 +215,20 @@ def main() -> None:
     try:
         if args.command == "operation-status":
             result = operation_status(root)
+        elif args.command.startswith('self-improve-'):
+            from . import self_improvement as loop
+            if args.command == 'self-improve-status':
+                result = loop.status(root)
+            elif args.command == 'self-improve-day':
+                result = loop.day(root, args.run_id, root / args.policy, root / args.report if args.report else None)
+            elif args.command == 'self-improve-feedback':
+                result = {'feedback': loop.feedback(root, read_json(root / args.batch)['entries'], args.session)}
+            elif args.command == 'self-improve-activate':
+                result = loop.activate(root, args.experiment_id, root / args.policy, reviewer=args.reviewer, human_reviewed=args.human_reviewed)
+            elif args.command == 'self-improve-monitor':
+                result = loop.monitor(root, root / args.policy, args.session)
+            else:
+                result = loop.rollback(root, root / args.policy, args.reason)
         elif args.command == "m5-material-demo":
             from .material_research_fixture import demo
             result = demo(root / args.out, root / args.baseline_config, root / args.question_set)

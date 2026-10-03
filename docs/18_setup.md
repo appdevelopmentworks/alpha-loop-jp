@@ -42,6 +42,7 @@ uv run --managed-python --no-project --python 3.11 python -S scripts/verify_long
 
 ```powershell
 uv run --offline --managed-python --no-project --python 3.11 python -S scripts/verify_material_m5.py
+uv run --offline --managed-python --no-project --python 3.11 python -S scripts/verify_self_improvement.py
 uv run --offline --managed-python --no-project --python 3.11 python -m unittest discover -s tests -v
 ```
 
@@ -82,6 +83,8 @@ uv run --offline --managed-python --no-project --python 3.11 python -m alpha_loo
 `configs/hermes_operations.json`はStandard / Growthを先に取得し、Primeも含む設計初期値。売買代金は任意。入力はreconstructed、現在のJPX月末一覧は当時母集団を保証しない。非公式yfinanceの個人研究用途と第三者データの条件を守り、429休止を回避しない。Yahoo! JAPAN・株探ページの自動スクレイピングは行わない。
 
 共通設定は`configs/`に追跡する。個人用の変更は`configs/hermes_operations.local.json`など`.local.json`へ保存し、手動CLIの`--operation-config`またはHermesの`ALPHA_LOOP_CONFIG`で指定する。参照する材料設定にも独自の変更があれば対応するlocalファイルへ分離する。外部AI/発注はfalseのまま。
+
+自己改善を含める場合は`configs/hermes_self_improving.json`を日次の`--operation-config`に指定する。配置用Hermesラッパーの既定はこの設定。詳細は[21](21_hypothesis_loop.md)。旧`hermes_operations.json`は元の入口として残る。
 
 ## 5. 任意のローカルGPU構成
 
