@@ -9,7 +9,7 @@ from pathlib import Path
 from .common import digest, read_json, write_json
 from .dashboard import enforce_publication
 
-FILES = ("index.html", "style.css", "app.js", ".nojekyll", "data/dashboard.json")
+FILES = ("index.html", "style.css", "app.js", ".nojekyll", "data/dashboard.json", "og-image-v1.png")
 REMOTE = "https://github.com/appdevelopmentworks/alpha-loop-jp.git"
 
 

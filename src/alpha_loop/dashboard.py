@@ -242,7 +242,7 @@ def validate_document(document: dict) -> None:
 def export_site(document: dict, destination: Path, assets: Path) -> dict:
     from .common import atomic_bytes
     validate_document(document)
-    for name in ("index.html", "style.css", "app.js", ".nojekyll"):
+    for name in ("index.html", "style.css", "app.js", ".nojekyll", "og-image-v1.png"):
         atomic_bytes(destination / name, (assets / name).read_bytes())
     write_json(destination / "data/dashboard.json", document)
     return {"status": "SAVED", "directory": str(destination), "days": len(document["days"]),

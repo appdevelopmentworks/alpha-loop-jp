@@ -29,7 +29,7 @@ uv run --offline --managed-python --no-project --python 3.11 python -S scripts/e
 uv run --offline --managed-python --no-project --python 3.11 python -S scripts/serve_dashboard.py --site outputs/dashboard/demo
 ```
 
-`http://127.0.0.1:8765/`を開く。サーバーの終了はCtrl+C。新規環境でPythonをまだ取得していなければ `--offline` を外す。HTMLをダブルクリックする `file://` ではJSON取得が失敗するためHTTPで表示する。プレビューはloopbackのみ、画面の5ファイルだけを配信し、プロジェクト全体は配信しない。
+`http://127.0.0.1:8765/`を開く。サーバーの終了はCtrl+C。新規環境でPythonをまだ取得していなければ `--offline` を外す。HTMLをダブルクリックする `file://` ではJSON取得が失敗するためHTTPで表示する。プレビューはloopbackのみ、画面とOGP画像の指定ファイルだけを配信し、プロジェクト全体は配信しない。
 
 合成デモは22営業日分の架空データで、候補ゼロ・欠損・直近の評価待ちを含む。デモ用カレンダーであり、実市場の成績や正式営業日カレンダーの検証結果ではない。
 
@@ -63,7 +63,17 @@ GitHub CLIから設定する場合は `gh auth login` が別途必要。2026-10-
 
 GitHub Freeでは公開リポジトリーが必要。設定したフォルダーはWeb配信範囲であり、公開リポジトリー内の別ファイルを非公開にする機能ではない。
 
-公開ファイルは `index.html`、`style.css`、`app.js`、`.nojekyll`、`data/dashboard.json` の5つ。原本/台帳/内部パス/LLM応答は出力しない。許可していない余分なフィールドやファイル、symlinkがある場合は送信を拒否する。
+公開ファイルは `index.html`、`style.css`、`app.js`、`.nojekyll`、`data/dashboard.json`、`og-image-v1.png` の6つ。原本/台帳/内部パス/LLM応答は出力しない。許可していない余分なフィールドやファイル、symlinkがある場合は送信を拒否する。
+
+## リンクプレビュー画像
+
+2026-10-04に生成した横長画像 `dashboard/og-image-v1.png`（1731×909、PNG、約1.15MB）を使用する。銘柄や予測成績の数値を含まないデザインであり、日次更新でも同じ画像を公開対象へ同梱する。画像URLは `https://appdevelopmentworks.github.io/alpha-loop-jp/og-image-v1.png`。
+
+HTMLのheadへOpen Graphのtitle/description/type/url/image/サイズ/altと、Xの `summary_large_image` を設定。JavaScriptを実行しない共有先も画像URLを読めるよう、静的HTMLに含める。公開除外検査ではこのPNGだけを明示的に許可し、他のバイナリーは引き続き拒否する。仕様は[Open Graph公式](https://ogp.me/)を参照。
+
+公開先から画像が取得可能で、サイズ・MIME・hashとメタ情報が一致することを確認する。LINE/Xなど各サービス内での実共有は未実施。プレビューの対応・キャッシュは共有先に依存するため、更新が即時反映されない場合がある。証跡は `data/operations/dashboard/ogp_local.json` と `ogp_remote.json`。
+
+2026-10-04にcommit `f30c9264a30052afc5fc8586f5ab824de7ce1c34` を公開し、Pagesビルド完了・公開HTMLのメタ情報・公開画像のMIME/寸法/hash一致を確認済み。
 
 ## 日次自動更新
 

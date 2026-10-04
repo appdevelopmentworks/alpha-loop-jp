@@ -5,7 +5,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 PROJECT = Path(__file__).resolve().parents[1]
-ALLOWED = {"/", "/index.html", "/style.css", "/app.js", "/data/dashboard.json"}
+ALLOWED = {"/", "/index.html", "/style.css", "/app.js", "/data/dashboard.json", "/og-image-v1.png"}
 
 
 def main():

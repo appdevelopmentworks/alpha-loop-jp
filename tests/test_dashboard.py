@@ -163,7 +163,7 @@ class DashboardTest(unittest.TestCase):
             self.assertEqual(second["status"],"UNCHANGED")
             files=subprocess.run(["git","--git-dir="+str(bare),"ls-tree","-r","--name-only","gh-pages"],
                                  capture_output=True,check=True,text=True).stdout.splitlines()
-            self.assertEqual(set(files),{"index.html","style.css","app.js",".nojekyll","data/dashboard.json"})
+            self.assertEqual(set(files),{"index.html","style.css","app.js",".nojekyll","data/dashboard.json","og-image-v1.png"})
             self.assertFalse((self.root / ".git").exists())
 
     def test_conflicting_saved_evaluations_are_not_cherry_picked(self):

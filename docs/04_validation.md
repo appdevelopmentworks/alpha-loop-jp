@@ -279,3 +279,13 @@ Pythonのダッシュボード23件（10.342秒）、画面側18検査成功。�
 合成22日分とローカル実結果4日分の生成、公開DRY_RUN、元の候補CSV23ファイル・数値コードhash保持を確認。ブラウザーで9/30の合成候補に終値-10.78%/-2.02%/+1.00%を表示し、下落のみへ絞ると前二者が下落率順に残ることを確認。拡張した合成デモをgh-pagesへPushし、commit `87d9c52159b6976b4e84caa25ecc35cf45775036` のPagesビルド成功と同じ表示/絞り込みを公開URLで確認。ローカルの9/30参考実結果は不的中・終値下落21件/最小-14.74%、10/1は24件/最小-6.25%で、終値不明はそれぞれ0件。実データは公開していない。合成の的中率や下落率は実市場の成績ではない。証跡は `data/operations/dashboard_acceptance.json`、`data/operations/dashboard_decline_acceptance.json`、`data/operations/dashboard_decline_published.png`。
 
 残条件は実データの公開権利、次回定時全工程、スマートフォン実機、ブラウザーでのCSV保存完了、自己改善版の比較可視化。終値下落の表示は実装済み。
+
+## 24. リンクプレビュー画像（2026-10-04）
+
+ユーザー要望により、横長の画像 `dashboard/og-image-v1.png` を生成（1731×909、PNG、1,145,456bytes）。ブランド名と候補→検証のイメージで、実銘柄・実成績を含まない。静的HTMLにOGPとXのsummary_large_image、絶対URL、サイズ、代替テキストを追加し、export/preview/publisherの指定ファイルへ当該PNGだけを追加。
+
+既存ダッシュボード23テスト成功（9.851秒）。公開除外検査は141ファイル、138ローカル参照、18非公開probeで成功。公開用PNGだけを明示的に許可し、他のバイナリー拒否は維持。隔離Git書き出しで画像・ソースのバイト保持を確認。条件判定や数値データの変更なし。
+
+gh-pagesのcommit `f30c9264a30052afc5fc8586f5ab824de7ce1c34` のビルド成功を確認。公開HTMLをJavaScript実行なしで取得し、OGP/Xの画像URL・タイトルなどを確認。公開画像のimage/png、寸法と生成原本のSHA-256一致を確認した。証跡は `data/operations/dashboard/ogp_local.json`、`ogp_remote.json`、`publication.json`、`pages_setup.json`。
+
+LINE/Xなど各共有先の実UIでのリンク送信・キャッシュ更新は未実施。リンクを他者へ送る操作は行っていない。共有先の対応/キャッシュによりカード表示と更新時刻は異なる。

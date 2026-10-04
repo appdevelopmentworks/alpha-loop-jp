@@ -63,6 +63,14 @@ def main():
             errors.append('private root included: ' + name)
         if path.stat().st_size > 2_000_000:
             errors.append('unexpected large public file: ' + name)
+        if name == 'dashboard/og-image-v1.png':
+            # Explicit public design asset only. Other binary files remain rejected.
+            raw = path.read_bytes()
+            if (len(raw) < 33 or raw[:8] != b'\x89PNG\r\n\x1a\n' or raw[12:16] != b'IHDR'
+                    or int.from_bytes(raw[16:20], 'big') != 1731
+                    or int.from_bytes(raw[20:24], 'big') != 909):
+                errors.append('invalid dashboard preview image: ' + name)
+            continue
         try:
             text = path.read_text(encoding='utf-8-sig')
         except UnicodeDecodeError:
