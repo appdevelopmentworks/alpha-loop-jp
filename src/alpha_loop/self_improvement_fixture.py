@@ -23,6 +23,13 @@ class SyntheticReasoner:
 
     def ask(self, facts):
         import json
+        if facts.get('report_kind') == 'hypothesis_analysis':
+            from .inference import INTERPRETATIONS
+            content = {'status': 'ANALYZED', 'analyses': [
+                {'evidence_ids': ['obs:' + spec['features'][0]], 'interpretation_code': code,
+                 'alternative_codes': ['small_sample'], 'falsification_codes': ['capture_loss'], 'confidence': 'low'}
+                for code, spec in INTERPRETATIONS.items()]}
+            return {'model': self.model_id, 'choices': [{'message': {'content': json.dumps(content)}, 'finish_reason': 'stop'}]}
         self.facts = facts
         return {'model': self.model_id, 'choices': [{'message': {'content': json.dumps({'hypotheses': [
             {'condition_ids': self.conditions, 'reason_code': 'avoid_overheat'}]})}, 'finish_reason': 'stop'}]}
@@ -85,13 +92,14 @@ def synthetic_policy(root: Path, path: Path):
 def issue(root, baseline, policy, session, conditions=None, bad=False):
     directory, following = input_day(root, session, bad=bad)
     at = session + 'T20:00:00+09:00'
-    with patch('alpha_loop.pipeline.now_iso', return_value=at), patch('alpha_loop.self_improvement.now_iso', return_value=at):
+    with patch('alpha_loop.pipeline.now_iso', return_value=at), patch('alpha_loop.self_improvement.now_iso', return_value=at), patch('alpha_loop.inference.now_iso', return_value=at), patch('alpha_loop.reporting.now_iso', return_value=at):
         manifest = run(root, directory, baseline, session, at)
         ranked = derive_ranking(root, directory, session, .05, 50)
         study = retrospective(root, Path(ranked['ranking_input']), directory, baseline)
         provider = SyntheticReasoner(conditions)
-        report = qwen_retrospective_report(root, study['study_id'], provider, loop.learning_facts(root, session))
-        result = loop.day(root, manifest['run_id'], policy, Path(report['report_path']))
+        feature_session = read_json(root / 'outputs/retrospectives' / study['study_id'] / 'study_manifest.json')['feature_session']
+        report = None if loop.protected(root, session) or loop.protected(root, feature_session) else qwen_retrospective_report(root, study['study_id'], provider, loop.learning_facts(root, session), analysis_required=True)
+        result = loop.day(root, manifest['run_id'], policy, Path(report['report_path']) if report else None)
     return manifest, result, following, provider
 
 
@@ -144,6 +152,7 @@ def demo(root: Path, baseline: Path, policy_source: Path):
     state = loop.status(root)
     paired = next(f for f in state['feedback'] if f['source_session'] == bad_forecast['session'])
     proof = {'data_grade': 'synthetic', 'forecast_days': len(state['days']), 'versions': len(state['versions']),
+             'pre_hypothesis_analysis': [v['source']['inference'] for v in state['versions']],
              'candidate_csv': bad_forecast['candidate_csv'], 'latest_candidate_csv': final_forecast['candidate_csv'],
              'operational_candidate_csv': final_forecast['operational_candidate_csv'],
              'outcomes_csv': str(root / paired['directory'] / 'outcomes.csv'),

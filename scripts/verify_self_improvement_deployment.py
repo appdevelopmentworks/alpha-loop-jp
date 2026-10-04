@@ -1,5 +1,6 @@
 """Deploy the reviewed Hermes entry point and verify it on isolated synthetic input."""
 import json
+import argparse
 import os
 import re
 import shutil
@@ -22,12 +23,17 @@ from alpha_loop.self_improvement import engine_hash as loop_hash
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--expected-tests', type=int, default=222)
+    parser.add_argument('--proof-name', choices=['self_improvement_deployment', 'inference_deployment'], default='self_improvement_deployment')
+    args = parser.parse_args()
     previous = read_json(PROJECT / 'data/operations/material_m5_deployment.json')
-    acceptance = read_json(PROJECT / 'data/operations/self_improvement_acceptance.json')
-    log = (PROJECT / 'data/operations/self_improvement_regression_stderr.log').read_text(encoding='utf-8-sig')
+    prefix = 'inference' if args.proof_name == 'inference_deployment' else 'self_improvement'
+    acceptance = read_json(PROJECT / 'data/operations' / (prefix + '_acceptance.json'))
+    log = (PROJECT / 'data/operations' / (prefix + '_regression_stderr.log')).read_text(encoding='utf-8-sig')
     count = re.search(r'Ran (\d+) tests in ([\d.]+)s', log)
-    if not count or int(count[1]) != 222 or not log.rstrip().endswith('OK'):
-        raise RuntimeError('full 222-test regression required before deployment')
+    if not count or int(count[1]) != args.expected_tests or not log.rstrip().endswith('OK'):
+        raise RuntimeError('expected full regression required before deployment')
     installed = Path.home() / 'AppData/Local/hermes'
     sources = [(PROJECT / 'integrations/hermes/alpha_loop_daily.py', installed / 'scripts/alpha_loop_daily.py'),
                (PROJECT / 'integrations/hermes/alpha-loop-jp/SKILL.md', installed / 'skills/alpha-loop-jp/SKILL.md')]
@@ -55,6 +61,8 @@ def main():
         new_config = read_json(PROJECT / 'configs/hermes_self_improving.json')
         del new_config['self_improvement_config']
         checks['original_operation_settings_preserved'] = old_config == new_config
+        if prefix == 'inference':
+            checks['analysis_before_hypothesis'] = acceptance['analysis_before_hypothesis'] is True
         con = sqlite3.connect((PROJECT / 'data/state.sqlite').as_uri() + '?mode=ro', uri=True)
         try:
             rows = con.execute('SELECT experiment_id,registration_hash FROM m5_experiments ORDER BY experiment_id').fetchall()
@@ -114,7 +122,7 @@ def main():
                  'job_id': job['id'], 'next_run_at': job['next_run_at'], 'real_run_id': manifest['run_id'],
                  'default_config': 'configs/hermes_self_improving.json', 'new_live_scheduled_run_verified': False,
                  'real_market_quality_validated': False, 'external_ai_enabled': False, 'orders_enabled': False}
-        write_json(PROJECT / 'data/operations/self_improvement_deployment.json', proof)
+        write_json(PROJECT / 'data/operations' / (args.proof_name + '.json'), proof)
     print(json.dumps(proof, ensure_ascii=False, indent=2))
 
 

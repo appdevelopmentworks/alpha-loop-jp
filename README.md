@@ -11,7 +11,7 @@
 | ファイル・合成データ入力、候補/選外CSV、翌営業日評価、replay | 実装済み |
 | yfinanceによる株価履歴収集、急騰銘柄の前日状態との比較 | 個人研究用に接続済み |
 | Windows Hermesの平日20時実行、中断再開、状態確認 | 実機確認済み。新規環境では別途導入・登録が必要 |
-| ローカルQwen日報・週次仮説案 | 接続済み。GPU環境は任意の追加構成 |
+| ローカルQwen日報・仮説前の分析/推論・日次/週次仮説案 | 接続済み。根拠と分析を別保存。GPU環境は任意の追加構成 |
 | OpenJev材料shadow、根拠保存・正解比較、長文抜粋分析 | 実装済み。実資料品質は未検証 |
 | M5事前登録、比較・採否、日次仮説候補・結果のフィードバック、採用・監視・復帰 | 実装済み。初回本番採用は人手確認、実データ採用は品質・未使用期間待ち |
 
@@ -44,12 +44,13 @@ Pythonが準備済みなら`uv run`に`--offline`を追加できます。既存�
 uv run --offline --managed-python --no-project --python 3.11 python -m unittest discover -s tests -v
 ```
 
-既存機能の確認記録は2026-10-02時点で184テスト成功。[検証仕様・実施記録](docs/04_validation.md)に合成/実機/未実施の区別を記載しています。
+2026-10-04時点で全240テスト成功。仮説前分析のローカルQwen実応答と、API/GPUなしの合成ループも確認済み。[検証仕様・実施記録](docs/04_validation.md)に合成/実機/未実施の区別を記載しています。
 
 自己改善の合成確認（API/GPU・追加パッケージ不要）:
 
 ```powershell
 uv run --offline --managed-python --no-project --python 3.11 python -S scripts/verify_self_improvement.py
+uv run --offline --managed-python --no-project --python 3.11 python -S scripts/verify_inference.py
 ```
 
 ## マニュアル
@@ -61,6 +62,7 @@ uv run --offline --managed-python --no-project --python 3.11 python -S scripts/v
 | 初回Git公開、除外確認、commit/push、環境移行 | [Git公開手順](docs/20_git_publish.md) |
 | 要求・設計・データ契約・検証仕様 | [設計文書の索引](docs/README.md) |
 | 価格M5比較 / 材料M5比較 / 長文材料 | [価格比較](docs/13_m5_comparison.md) / [材料比較](docs/16_m5_material_comparison.md) / [長文分析](docs/17_long_materials.md) |
+| 仮説を立てる前の分析・推論、根拠・代替説明・反証条件 | [分析工程](docs/22_pre_hypothesis_inference.md) |
 
 ## リポジトリ構成
 

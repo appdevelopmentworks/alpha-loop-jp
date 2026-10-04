@@ -113,7 +113,7 @@ def _qwen(root: Path, config: dict, run_id: str, study_id: str | None, learning_
         result = {"daily_report": qwen_report(root, run_id, provider)}
         if study_id and not skip_hypotheses:
             try:
-                result["hypotheses"] = qwen_retrospective_report(root, study_id, provider, learning_feedback) if learning_feedback is not None else qwen_retrospective_report(root, study_id, provider)
+                result["hypotheses"] = qwen_retrospective_report(root, study_id, provider, learning_feedback, analysis_required=True)
             except NoHypothesisEvidence as error:
                 result["hypotheses_status"] = "NOT_GENERATED"
                 result["hypotheses_reason"] = str(error)

@@ -70,6 +70,7 @@ AI後のGPU復元は`data/operations/gpu_leases/`で`RESTORED`を確認する。
 | 判定根拠・条件/入力/ソース版 | `run_manifest.json`、`data/snapshots/`、`data/code_bundles/` |
 | 前のrunの翌営業日結果 | `outputs/<前のrun>/evaluation/<id>/outcomes.csv` |
 | 急騰銘柄の前日状態比較 | `outputs/retrospectives/study-*/` |
+| 仮説前の分析・根拠・代替説明・反証条件 | 同ディレクトリの`inference/<analysis-id>/report.md`・`analysis.json`。モデル原応答とmanifestも保存。[分析工程](22_pre_hypothesis_inference.md) |
 | Qwen日報 | `outputs/<run>/qwen/` |
 | 材料・引用・正解比較 | `outputs/<run>/materials/`、`outputs/material_quality/` |
 | 週次仮説案 | `outputs/weekly_research/completed/<週>/` |

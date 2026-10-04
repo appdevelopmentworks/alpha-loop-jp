@@ -237,3 +237,17 @@ Windowsの深い配置先ではOSのパス長制限を実際に確認し、短�
 証跡: `data/operations/self_improvement_acceptance.json`、`self_improvement_regression_stderr.log`、`self_improvement_deployment.json`、`self_improvement_clean_root.txt`。配置確認時、旧fixtureのカレンダーがDまでしかなかったため翌営業日を明示して再試験した。失敗した配置は自動復帰し、最終配置は成功。自己改善のファイル入力にはD+1を含むカレンダーが必要。
 
 配置済みHermesラッパーは既定で`configs/hermes_self_improving.json`を使う。明示的な`ALPHA_LOOP_CONFIG`は優先する。次回予定は10/5 20:00 JSTで、Hermes GatewayとDocker/GPUの稼働が必要。定時登録追加・実データ採用・モデル追加学習・外部AI送信・発注・commit/pushは行っていない。実データ品質と予測精度、材料B1/B2のACTIVE、全文統合/OCRは別の残条件。
+
+## 21. 仮説前の分析・推論工程（2026-10-04）
+
+[22](22_pre_hypothesis_inference.md)の独立工程を実装。全240テスト成功（248.283秒、追加18件）。分析→検証/保存→仮説の呼出し順序、根拠ID/指標対応、説明/代替/反証、未来の評価・分析完成時刻、モデル/版/runtime・参照の結び付き、最終期間の入力拒否、未知/不明/自由数値/途中切れ/拒否応答、改変拒否、再実行・仮説側失敗後の分析再利用、分析失敗時の基準CSV保持を確認した。従来の価格/材料/休日/分割/未約定/運用安定化の回帰も通過。
+
+`python -S scripts/verify_inference.py`で15営業日・2世代の合成を実行し、両世代の分析原応答・根拠・候補/翌日結果・固定比較・模擬採用と復帰を生成。公開対象だけの短い新規配置先でも成功した。追加パッケージ/API/GPUは使用せず、合成成績を実成績と扱わない。
+
+Docker起動後、既存`Inferact/Qwen3.8-27B-NVFP4`の固定revisionで、10/2急騰事例の10/1までの特徴を実処理した。分析と仮説の2回のモデル呼出しが成功し、4説明（low、根拠・代替・反証あり）と2仮説を保存。数値成果物・直近日次receiptは保持、新しい予測発行や収集は行っていない。最終ソースの根拠/期間/モデル検証で保存応答を再照合した。GPU排他の終了後は開始前と同じく両専用コンテナがexitedへ復元された。実応答の形式と根拠の対応の確認であり、因果・予測性能・材料品質の検証ではない。
+
+配置済みHermesスキルを退避して同期し、既存ラッパーを隔離合成・no-aiで確認。価格/価格M5/材料M5/長文エンジン、基準設定、登録2実験、既存平日20時/no-agentジョブ、10/2成果物を保持した。次回10/5 20:00 JSTの既存入口で、分析を新仮説の必須工程として使用する。新ジョブ・モデルの導入、発注、外部AI送信は行っていない。
+
+証跡: `data/operations/inference_regression_stderr.log`、`inference_acceptance.json`、`inference_local_acceptance.json`、`inference_deployment.json`、`inference_clean_root.txt`。公開対象の除外・参照・ソースバイト保持も再確認。
+
+未実施: 新版の定時全工程と実際の翌日フィードバックを使う分析、長期の分析品質/性能、真正PIT・実材料正解・実採用。前二者は次回営業日以降の実運用で確認し、後者は従来の品質・未使用期間ゲートを維持する。従来形式の分析なしレポートは互換関数だけに残し、新世代の入力には使用できない。

@@ -176,7 +176,7 @@ class HypothesisLoopTest(unittest.TestCase):
         m = run(self.root, directory, BASELINE, '2026-09-03', '2026-09-03T20:00:00+09:00')
         ranking = derive_ranking(self.root, directory, '2026-09-03', .05, 50)
         study = retrospective(self.root, Path(ranking['ranking_input']), directory, BASELINE)
-        report = qwen_retrospective_report(self.root, study['study_id'], SyntheticReasoner(['ret5_le_0_05']))
+        report = qwen_retrospective_report(self.root, study['study_id'], SyntheticReasoner(['ret5_le_0_05']), analysis_required=True)
         value = loop.day(self.root, m['run_id'], path, Path(report['report_path']))
         self.assertEqual(value['new_versions'], [])
 

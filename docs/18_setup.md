@@ -143,3 +143,5 @@ hermes cron resume $jobId
 Hermesのno-agentは対話モデルを呼ばない方式。日報用ローカルQwenはPythonから別途呼ぶ。全体7100秒、外側7200秒、1試行3000秒・最大3回は現行初期値。共通cron timeout設定は他のHermesジョブにも影響するため、既存環境では現設定を確認する。
 
 この文書整備では新しいジョブ登録・有効化、モデルのダウンロードは実行していない。
+
+2026-10-04追加の仮説前分析は既存Qwen接続と同じHermes入口を使う。導入後のAPI/GPUなし一括確認は`uv run --offline --managed-python --no-project --python 3.11 python -S scripts/verify_inference.py`。入力・分析・根拠・仮説の保存場所は[22](22_pre_hypothesis_inference.md)を参照。

@@ -349,7 +349,7 @@ def main() -> None:
         elif args.command == "retrospective-report":
             provider = LocalQwen(args.base_url, args.model_id, args.model_revision,
                                  read_json(root / args.runtime_config), args.timeout_seconds)
-            result = qwen_retrospective_report(root, args.study_id, provider)
+            result = qwen_retrospective_report(root, args.study_id, provider, analysis_required=True)
         else:
             result = list_hypotheses(root)
         print(json.dumps(result, ensure_ascii=False, sort_keys=True))

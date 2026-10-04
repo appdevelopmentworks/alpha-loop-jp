@@ -70,7 +70,7 @@ def _db(root: Path):
 def engine_hash():
     directory = Path(__file__).parent
     return digest(canonical({name: digest((directory / name).read_bytes()) for name in
-                             ('self_improvement.py', 'hypothesis_plans.py', 'reporting.py')}))
+                             ('self_improvement.py', 'hypothesis_plans.py', 'reporting.py', 'inference.py')}))
 
 
 def _put(con, kind, key, value):
@@ -291,11 +291,21 @@ def _plans(root, path, manifest):
     plans = validate_plans(json_content(response['choices'][0]['message']['content']), report['study_id'], report['data_grade'])
     if plans != report['hypothesis_plans'] or report.get('structure_validated') is not True:
         raise RuntimeError('proposal plans differ from saved model response')
+    analysis = cache['facts'].get('pre_hypothesis_analysis')
+    if not analysis or report.get('inference') != analysis['reference'] or cache['identity'].get('analysis_manifest_hash') != analysis['reference']['manifest_hash']:
+        raise ValueError('preceding verified analysis required for a new hypothesis generation')
+    from .inference import verify as verify_inference, bind_plans
+    inferred = verify_inference(root, analysis['reference'], cache['facts'], read_json(output / 'comparison.json')['groups'], report['model_id'], report['model_revision'], cache['identity']['runtime_config'])
+    if inferred['summary'] != analysis['summary']:
+        raise RuntimeError('proposal analytical summary binding mismatch')
+    if parse_time(inferred['created_at']) > parse_time(now_iso()):
+        raise ValueError('analysis was not available at hypothesis time')
+    bind_plans(plans, inferred['summary'])
     if cache['facts']['ranking_session'] != manifest['target_session'] or cache['facts']['feature_session'] != study['feature_session']:
         raise ValueError('proposal contains wrong-time evidence')
     source = {'report_path': str(path.resolve()), 'report_hash': digest(path.read_bytes()),
               'cache_hash': digest(raw_cache.read_bytes()), 'study_id': report['study_id'], 'study': study,
-              'learning_feedback': cache['facts'].get('learning_feedback')}
+              'learning_feedback': cache['facts'].get('learning_feedback'), 'inference': analysis['reference']}
     return plans, source, 'VALIDATED'
 
 
