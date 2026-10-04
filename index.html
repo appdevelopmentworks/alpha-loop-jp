@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+  <title>Alpha Loop JP — 日次ダッシュボード</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><div class="brand"><span class="mark" aria-hidden="true">α</span><div>Alpha Loop <b>JP</b><small>日本株 · 日次候補と翌日検証</small></div></div><span class="readonly">閲覧専用</span></header>
+  <main>
+    <section class="heading"><div><p class="eyebrow">DAILY OBSERVATORY</p><h1>候補から、結果まで。</h1><p class="sub">毎日の候補と翌営業日の値動きを、同じ基準で振り返ります。</p></div><div class="update"><span>最終データ更新</span><strong id="updated">—</strong></div></section>
+    <div id="notice" class="notice" role="status">保存データを読み込んでいます…</div>
+    <section class="latest panel" aria-labelledby="latest-heading"><div><p class="eyebrow">LATEST CANDIDATES</p><h2 id="latest-heading">最新の候補</h2><p id="latest-description">—</p></div><div class="latest-number"><strong id="latest-count">—</strong><span>銘柄</span></div><div class="latest-result"><span id="latest-status">—</span><button id="latest-csv" disabled>候補CSVを保存 ↓</button></div></section>
+    <section class="controls" aria-label="表示条件"><div class="periods" role="group" aria-label="集計期間"><button data-period="7">1週間</button><button data-period="14">2週間</button><button data-period="30" class="active" aria-pressed="true">1か月</button><button data-period="custom">指定期間</button></div><div class="date-controls"><label>開始<input id="start" type="date"></label><span>—</span><label>終了<input id="end" type="date"></label></div><label class="cohort-label">データ・条件版<select id="cohort"></select></label></section>
+    <section class="metrics" aria-label="期間集計">
+      <article class="metric accent"><span>的中率</span><strong id="rate">—</strong><small id="metric-definition">翌日高値で10%以上上昇</small></article>
+      <article class="metric"><span>候補延べ件数</span><strong id="candidate-total">—</strong><small id="available-days">—</small></article>
+      <article class="metric"><span>的中 / 評価済み</span><strong id="hit-total">—</strong><small>評価可能な候補だけを分母に</small></article>
+      <article class="metric"><span>不的中</span><strong id="miss-total">—</strong><small>指定の上昇率に届かなかった候補</small></article>
+      <article class="metric"><span>未評価・不明</span><strong id="unknown-total">—</strong><small>不的中には含めません</small></article>
+    </section>
+    <section class="charts"><article class="panel chart-panel"><div class="section-title"><div><p class="eyebrow">DAILY OUTCOMES</p><h2>日別の候補と結果</h2></div><div class="legend"><span class="hit">的中</span><span class="miss">不的中</span><span class="unknown">未評価・不明</span></div></div><div id="chart" class="chart"></div><p class="chart-foot">横軸は候補日。結果は翌営業日の高値で判定します。</p></article><article class="panel breakdown"><p class="eyebrow">PERIOD SUMMARY</p><h2>評価の内訳</h2><div id="donut" class="donut"><span id="donut-label">—</span></div><p id="period-note" class="chart-foot">—</p></article></section>
+    <section class="panel"><div class="section-title"><div><p class="eyebrow">HISTORY</p><h2>日次ファイルと評価状況</h2></div><span id="range-label" class="muted"></span></div><div class="table-scroll"><table><caption class="sr-only">期間内の日別候補と結果</caption><thead><tr><th>候補日 → 翌営業日</th><th>候補数</th><th>的中 / 評価済み</th><th>的中率</th><th>結果の保存</th><th>ファイル</th></tr></thead><tbody id="history"></tbody></table></div><p id="empty" class="empty" hidden>この期間には保存データがありません。</p></section>
+    <section class="panel details"><div class="section-title"><div><p class="eyebrow">CANDIDATE DETAILS</p><h2 id="details-heading">銘柄別の結果</h2></div><label class="search-label">銘柄検索<input id="search" type="search" placeholder="コード・銘柄名" autocomplete="off"></label></div><p id="detail-note" class="muted"></p><div class="table-scroll"><table><caption class="sr-only">選択日の候補銘柄と翌日結果</caption><thead><tr><th>コード / 銘柄名</th><th>市場</th><th>候補区分</th><th>翌日高値の上昇率</th><th>判定</th><th>約定情報</th></tr></thead><tbody id="candidates"></tbody></table></div></section>
+    <footer><strong>集計の読み方</strong><p>対象は価格基準の候補CSVです。的中率＝的中件数÷評価可能な候補件数。期間全体の件数で集計し、日別的中率の平均は使いません。同じ銘柄の別日の候補はそれぞれ1件と数えます。</p><p>高値への到達は売買で得られた収益を意味しません。約定・費用込み収益はこの画面では集計していません。再構成データは事後の参考集計であり、事前予測の成績と区別します。自己改善の未使用期間・採否途中の成績は表示しません。</p><a href="https://github.com/appdevelopmentworks/alpha-loop-jp" rel="noopener noreferrer">プロジェクトと運用手順 ↗</a></footer>
+  </main>
+</body>
+</html>

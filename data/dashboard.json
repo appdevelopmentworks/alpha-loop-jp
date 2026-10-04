@@ -1,0 +1,1294 @@
+{
+  "days": [
+    {
+      "as_of": "2026-08-31T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.13131313131313133,
+          "hit": true,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.09803921568627451,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "unknown",
+          "high_return": null,
+          "hit": null,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "price_unknown",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-08-31T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-01T20:00:00+09:00",
+      "evaluated_through": "2026-09-01",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-01",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-08-31",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 2,
+        "hit_rate": 0.5,
+        "hits": 1,
+        "misses": 1,
+        "unknown": 1
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-01T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.13131313131313133,
+          "hit": true,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.09803921568627451,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-01T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-02T20:00:00+09:00",
+      "evaluated_through": "2026-09-02",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-02",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-01",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.3333333333333333,
+        "hits": 1,
+        "misses": 2,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-02T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.050505050505050504,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.0196078431372549,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-02T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-03T20:00:00+09:00",
+      "evaluated_through": "2026-09-03",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-03",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-02",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.0,
+        "hits": 0,
+        "misses": 3,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-03T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.050505050505050504,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.0196078431372549,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-03T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-04T20:00:00+09:00",
+      "evaluated_through": "2026-09-04",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-04",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-03",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.0,
+        "hits": 0,
+        "misses": 3,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-04T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [],
+      "completed_at": "2026-09-04T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-07T20:00:00+09:00",
+      "evaluated_through": "2026-09-07",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-07",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-04",
+      "stats": {
+        "candidates": 0,
+        "evaluated": 0,
+        "hit_rate": null,
+        "hits": 0,
+        "misses": 0,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-07T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.13131313131313133,
+          "hit": true,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.09803921568627451,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-07T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-08T20:00:00+09:00",
+      "evaluated_through": "2026-09-08",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-08",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-07",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.3333333333333333,
+        "hits": 1,
+        "misses": 2,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-08T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.050505050505050504,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.0196078431372549,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "unknown",
+          "high_return": null,
+          "hit": null,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "price_unknown",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-08T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-09T20:00:00+09:00",
+      "evaluated_through": "2026-09-09",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-09",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-08",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 2,
+        "hit_rate": 0.0,
+        "hits": 0,
+        "misses": 2,
+        "unknown": 1
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-09T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.050505050505050504,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.0196078431372549,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-09T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-10T20:00:00+09:00",
+      "evaluated_through": "2026-09-10",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-10",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-09",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.0,
+        "hits": 0,
+        "misses": 3,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-10T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.13131313131313133,
+          "hit": true,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.09803921568627451,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-10T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-11T20:00:00+09:00",
+      "evaluated_through": "2026-09-11",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-11",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-10",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.3333333333333333,
+        "hits": 1,
+        "misses": 2,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-11T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.13131313131313133,
+          "hit": true,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.09803921568627451,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-11T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-14T20:00:00+09:00",
+      "evaluated_through": "2026-09-14",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-14",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-11",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.3333333333333333,
+        "hits": 1,
+        "misses": 2,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-14T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.050505050505050504,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.0196078431372549,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-14T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-15T20:00:00+09:00",
+      "evaluated_through": "2026-09-15",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-15",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-14",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.0,
+        "hits": 0,
+        "misses": 3,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-15T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.050505050505050504,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.0196078431372549,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-15T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-16T20:00:00+09:00",
+      "evaluated_through": "2026-09-16",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-16",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-15",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.0,
+        "hits": 0,
+        "misses": 3,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-16T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.13131313131313133,
+          "hit": true,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.09803921568627451,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "unknown",
+          "high_return": null,
+          "hit": null,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "price_unknown",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-16T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-17T20:00:00+09:00",
+      "evaluated_through": "2026-09-17",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-17",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-16",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 2,
+        "hit_rate": 0.5,
+        "hits": 1,
+        "misses": 1,
+        "unknown": 1
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-17T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.13131313131313133,
+          "hit": true,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.09803921568627451,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-17T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-18T20:00:00+09:00",
+      "evaluated_through": "2026-09-18",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-18",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-17",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.3333333333333333,
+        "hits": 1,
+        "misses": 2,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-18T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.050505050505050504,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.0196078431372549,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-18T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-24T20:00:00+09:00",
+      "evaluated_through": "2026-09-24",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-24",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-18",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.0,
+        "hits": 0,
+        "misses": 3,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-24T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.050505050505050504,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.0196078431372549,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-24T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-25T20:00:00+09:00",
+      "evaluated_through": "2026-09-25",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-25",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-24",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.0,
+        "hits": 0,
+        "misses": 3,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-25T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.13131313131313133,
+          "hit": true,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.09803921568627451,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-25T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-28T20:00:00+09:00",
+      "evaluated_through": "2026-09-28",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-28",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-25",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.3333333333333333,
+        "hits": 1,
+        "misses": 2,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-28T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.13131313131313133,
+          "hit": true,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.09803921568627451,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-28T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-29T20:00:00+09:00",
+      "evaluated_through": "2026-09-29",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-29",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-28",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.3333333333333333,
+        "hits": 1,
+        "misses": 2,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-29T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.050505050505050504,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.0196078431372549,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "unknown",
+          "high_return": null,
+          "hit": null,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "price_unknown",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-29T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-09-30T20:00:00+09:00",
+      "evaluated_through": "2026-09-30",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-09-30",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-29",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 2,
+        "hit_rate": 0.0,
+        "hits": 0,
+        "misses": 2,
+        "unknown": 1
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-09-30T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.050505050505050504,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.0196078431372549,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-09-30T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-10-01T20:00:00+09:00",
+      "evaluated_through": "2026-10-01",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-10-01",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-09-30",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.0,
+        "hits": 0,
+        "misses": 3,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-10-01T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.13131313131313133,
+          "hit": true,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "limit_up",
+          "high_return": 0.09803921568627451,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "cost_unset",
+          "high_return": 0.04,
+          "hit": false,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "ok",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-10-01T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": "2026-10-02T20:00:00+09:00",
+      "evaluated_through": "2026-10-02",
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-10-02",
+      "prediction_eligible": false,
+      "result_saved": true,
+      "session": "2026-10-01",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 3,
+        "hit_rate": 0.3333333333333333,
+        "hits": 1,
+        "misses": 2,
+        "unknown": 0
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    },
+    {
+      "as_of": "2026-10-02T20:00:00+09:00",
+      "batch_status": "SUCCEEDED",
+      "candidates": [
+        {
+          "execution_status": "unknown",
+          "high_return": null,
+          "hit": null,
+          "market": "Prime",
+          "name": "合成未上昇",
+          "outcome_status": "pending",
+          "rank": 1,
+          "stage": "PREMOVE",
+          "symbol": "0001"
+        },
+        {
+          "execution_status": "unknown",
+          "high_return": null,
+          "hit": null,
+          "market": "Prime",
+          "name": "合成初動",
+          "outcome_status": "pending",
+          "rank": 1,
+          "stage": "EARLY",
+          "symbol": "0002"
+        },
+        {
+          "execution_status": "unknown",
+          "high_return": null,
+          "hit": null,
+          "market": "Prime",
+          "name": "合成材料監視",
+          "outcome_status": "pending",
+          "rank": 1,
+          "stage": "WATCH",
+          "symbol": "0003"
+        }
+      ],
+      "completed_at": "2026-10-02T20:00:00+09:00",
+      "data_grade": "synthetic",
+      "evaluated_at": null,
+      "evaluated_through": null,
+      "history_only": false,
+      "missing_target_count": 0,
+      "next_session": "2026-10-05",
+      "prediction_eligible": false,
+      "result_saved": false,
+      "session": "2026-10-02",
+      "stats": {
+        "candidates": 3,
+        "evaluated": 0,
+        "hit_rate": null,
+        "hits": 0,
+        "misses": 0,
+        "unknown": 3
+      },
+      "strategy_id": "price_baseline",
+      "strategy_version": "1.1.0",
+      "threshold": 0.1
+    }
+  ],
+  "export_version": "dashboard-v1",
+  "schema_version": 1,
+  "scope": "price_baseline",
+  "updated_at": "2026-10-02T20:00:00+09:00"
+}
