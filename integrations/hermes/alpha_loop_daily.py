@@ -63,6 +63,19 @@ def main() -> int:
     if payload.get("side_failures"):
         print("Optional side outputs failed; numerical outputs saved: " + ", ".join(payload["side_failures"]), file=sys.stderr)
         return 2
+    # The local export contains market results and remains ignored by Git.
+    # Remote publication requires a separate local policy; it is disabled by default.
+    try:
+        from alpha_loop.dashboard import after_daily
+        from alpha_loop.common import write_json
+        dashboard = after_daily(PROJECT_ROOT)
+        write_json(PROJECT_ROOT / "data/operations/dashboard/latest.json", dashboard)
+    except Exception as error:
+        from alpha_loop.common import now_iso, write_json
+        write_json(PROJECT_ROOT / "data/operations/dashboard/failure.json",
+                   {"status": "FAILED", "error_type": type(error).__name__, "at": now_iso()})
+        print("Dashboard export/publication failed; numerical outputs are preserved.", file=sys.stderr)
+        return 2
     return 0
 
 

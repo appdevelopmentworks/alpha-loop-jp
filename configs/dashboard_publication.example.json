@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "auto_publish": false,
+  "remote_url": "https://github.com/appdevelopmentworks/alpha-loop-jp.git",
+  "branch": "gh-pages",
+  "allowed_data_grades": ["synthetic"],
+  "rights_confirmed": false,
+  "rights_note": ""
+}

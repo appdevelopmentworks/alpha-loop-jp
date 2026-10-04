@@ -9,6 +9,7 @@
 | 機能 | 状態 |
 |---|---|
 | ファイル・合成データ入力、候補/選外CSV、翌営業日評価、replay | 実装済み |
+| 候補・翌日結果の静的ダッシュボード、GitHub Pages向け出力 | [合成デモ公開済み](https://appdevelopmentworks.github.io/alpha-loop-jp/)。実結果はローカル表示。自動Pushは無効、実データの公開条件は未確認 |
 | yfinanceによる株価履歴収集、急騰銘柄の前日状態との比較 | 個人研究用に接続済み |
 | Windows Hermesの平日20時実行、中断再開、状態確認 | 実機確認済み。新規環境では別途導入・登録が必要 |
 | ローカルQwen日報・仮説前の分析/推論・日次/週次仮説案 | 接続済み。根拠と分析を別保存。GPU環境は任意の追加構成 |
@@ -44,7 +45,9 @@ Pythonが準備済みなら`uv run`に`--offline`を追加できます。既存�
 uv run --offline --managed-python --no-project --python 3.11 python -m unittest discover -s tests -v
 ```
 
-2026-10-04時点で全240テスト成功。仮説前分析のローカルQwen実応答と、API/GPUなしの合成ループも確認済み。[検証仕様・実施記録](docs/04_validation.md)に合成/実機/未実施の区別を記載しています。
+分析工程追加時点で全240テスト成功。仮説前分析のローカルQwen実応答と、API/GPUなしの合成ループも確認済み。[検証仕様・実施記録](docs/04_validation.md)に合成/実機/未実施の区別を記載しています。
+
+ダッシュボード追加後は全体回帰254件と公開経路の追加2件、画面側の検査9件が成功。実結果4日分のローカル表示と合成22日分のデモを生成し、既存Hermesへの日次出力の配置も合成で確認しました。2026-10-04に合成デモをGitHub Pagesへ公開し、表示と期間切替を確認済みです。実データの公開条件確認と新版の実定時更新は未実施です。
 
 自己改善の合成確認（API/GPU・追加パッケージ不要）:
 
@@ -63,6 +66,7 @@ uv run --offline --managed-python --no-project --python 3.11 python -S scripts/v
 | 要求・設計・データ契約・検証仕様 | [設計文書の索引](docs/README.md) |
 | 価格M5比較 / 材料M5比較 / 長文材料 | [価格比較](docs/13_m5_comparison.md) / [材料比較](docs/16_m5_material_comparison.md) / [長文分析](docs/17_long_materials.md) |
 | 仮説を立てる前の分析・推論、根拠・代替説明・反証条件 | [分析工程](docs/22_pre_hypothesis_inference.md) |
+| ダッシュボードの表示、GitHub Pages公開、日次更新 | [ダッシュボード手順](docs/23_dashboard_pages.md) |
 
 ## リポジトリ構成
 

@@ -251,3 +251,21 @@ Docker起動後、既存`Inferact/Qwen3.8-27B-NVFP4`の固定revisionで、10/2�
 証跡: `data/operations/inference_regression_stderr.log`、`inference_acceptance.json`、`inference_local_acceptance.json`、`inference_deployment.json`、`inference_clean_root.txt`。公開対象の除外・参照・ソースバイト保持も再確認。
 
 未実施: 新版の定時全工程と実際の翌日フィードバックを使う分析、長期の分析品質/性能、真正PIT・実材料正解・実採用。前二者は次回営業日以降の実運用で確認し、後者は従来の品質・未使用期間ゲートを維持する。従来形式の分析なしレポートは互換関数だけに残し、新世代の入力には使用できない。
+
+## 22. GitHub Pages向けダッシュボード（2026-10-04）
+
+[23](23_dashboard_pages.md)の静的画面と確定的な集計・公開境界を実装。全体回帰254件成功（267.939秒）。その後、隔離bare Gitへの公開/同一入力のUNCHANGEDと、矛盾した保存評価の採用拒否の追加2件も成功した。ダッシュボードの現行16件は6.844秒で成功。画面側の9検査（延べ分母、未知、データ区分/事前予測算入可否、日付、CSVの式対策）も通過した。
+
+確認: 全母集団ではなく選択decision_idのみの結合、候補ゼロ、未評価/欠損/調整不明の扱い、データ区分/条件版の分離、同一実行・重複receiptの除外、再実行一致、原本/評価の改変拒否、元の候補CSV23ファイルと数値コード保持、公開用の明示フィールド、実データ公開の既定拒否、想定外ファイル/ブランチの拒否、ネット接続なしDRY_RUN。隔離GitへのPushと再実行は実際のGitを使い、GitHubには送信していない。
+
+API/GPU・追加パッケージなしで合成22営業日のデモを生成し、既存実結果4日分をローカルへ出力。10/2候補39件・10/5評価待ち、9/30・10/1の翌日結果保存済みをブラウザーで確認。検索、候補日切替、指定期間が未評価だけのとき率がnullであることを確認した。画面の高値10%到達の2.5%は再構成データの参考値で、真正の事前予測成績・売買収益の証明には使わない。
+
+既存Hermesラッパー/スキルがcommit済みソースと一致することを確認し、バックアップ後に同期。隔離合成・no-aiの実入口で候補3件→ローカル画面→公開DISABLEDまで成功。既存cron設定、実receipt、候補CSVと価格コードは保持。新しいジョブ・モデル・発注・外部AI送信は追加していない。
+
+証跡: `data/operations/dashboard_acceptance.json`、`dashboard_regression_stderr.log`、`dashboard_deployment.json`、`dashboard_preview.png`。公開用のサンプルJSONはsyntheticのみ。
+
+公開対象だけの新しい短い配置先で `python -S scripts/export_dashboard.py --demo --public` も成功した。追加パッケージなし・ネット接続なしで22日分を生成し、公開サンプルJSONとバイト一致を確認。証跡は `data/operations/dashboard_clean_acceptance.json`。公開除外検査は140ファイル・138ローカル参照・18非公開probeで成功、Gitでのソースバイト保持を確認した（既定の限定パターン検査であり完全な秘密検出ではない）。
+
+その後、ユーザーが合成デモの初回公開を選択。既存リポジトリーの `gh-pages` へsyntheticの5ファイルだけを通常Pushし、commit `a0ed2b01f811bf7f2b948b9dc1a4ea7d3a3dcb0b` のGitHub Pagesビルド成功を公式APIで確認。公開元は既に `gh-pages` / `/(root)` で、設定変更は不要だった。公開URLで合成データの明示、候補3件/翌日評価待ち、保存済み結果、1か月→1週間の集計切替を確認。mainの作業ツリー/indexは変更せず、開発変更のcommitは別作業。証跡: `data/operations/dashboard/publication.json`、`data/operations/dashboard/pages_setup.json`、`data/operations/dashboard_published.png`。
+
+未実施: 実データ・派生結果の公開権利確認（個人研究用yfinanceは公開許可を証明しない）、新版の実定時更新（次回営業日待ち）、スマートフォン実機、公開画面からのCSVファイル保存完了（操作時のエラーはなかったが作業用ブラウザーのdownload通知はタイムアウト、生成処理は画面側検査で確認）、終値上昇率/自己改善版比較の可視化（この版は保存済み価格基準の高値ラベルだけ）。
