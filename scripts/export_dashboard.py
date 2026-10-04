@@ -27,6 +27,7 @@ def demo(root: Path, count: int = 22) -> dict:
         cursor -= timedelta(days=1)
     dates.reverse()
     ids = []
+    future_refs = {}
     for index, target in enumerate(dates):
         directory = root / "input" / str(index)
         fixture = create(directory, without_turnover=True)
@@ -57,6 +58,11 @@ def demo(root: Path, count: int = 22) -> dict:
             row["session_date"] = next_session
             if row["instrument_id"] in ("TSE:0001", "TSE:0002"):
                 row["adj_high"] = 112 if index % 4 in (0, 1) else 104
+                row["adj_close"] = 105 if index % 4 in (0, 1) else (97 if row["instrument_id"] == "TSE:0001" else 91)
+                row["adj_low"] = min(row["adj_low"], row["adj_close"])
+                row["adj_open"] = min(row["adj_open"], row["adj_high"])
+                if index % 4 not in (0, 1):
+                    row["execution_status"] = "proxy_only"
             if index % 6 == 0 and row["instrument_id"] == "TSE:0003":
                 row["bar_status"] = "missing"
         write_json(directory / "future.json", future)
@@ -71,8 +77,9 @@ def demo(root: Path, count: int = 22) -> dict:
         ids.append(manifest["run_id"])
         if index < count-1:
             with patch("alpha_loop.evaluation.now_iso", return_value=next_session+"T20:00:00+09:00"):
-                evaluate_run(root, manifest["run_id"], directory, next_session)
-    return build(root, run_ids=ids)
+                evaluated = evaluate_run(root, manifest["run_id"], directory, next_session)
+                future_refs[evaluated["evaluation_id"]] = str((directory / "future.json").relative_to(root))
+    return build(root, run_ids=ids, future_refs=future_refs)
 
 
 def main():

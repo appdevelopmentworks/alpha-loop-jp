@@ -24,6 +24,7 @@ def main():
     assert any(d["stats"]["candidates"] == 0 for d in document["days"])
     assert document["days"][-1]["stats"]["unknown"] == 3
     assert document["days"][-1]["next_session"] == "2026-10-05"
+    assert any(d["stats"]["negative_misses"]>0 for d in document["days"])
     policy = read_json(PROJECT / "configs/dashboard_publication.example.json")
     enforce_publication(document, policy)
     # Tracked sample is synthetic only. It lets Pages show a demo from a clean checkout.
@@ -46,6 +47,7 @@ def main():
              "native_days":len(native["days"]), "native_site":local_site["directory"],
              "publication":dry_run["status"], "network_used":False, "gpu_used":False,
              "original_candidate_files_preserved":len(original), "numerical_code_hash_preserved":True,
+             "negative_miss_demo_verified":True,
              "real_data_publication":"BLOCKED_BY_DEFAULT"}
     write_json(PROJECT / "data/operations/dashboard_acceptance.json",proof)
     print(json.dumps(proof,ensure_ascii=False,indent=2))

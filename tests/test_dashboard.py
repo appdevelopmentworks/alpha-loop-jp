@@ -40,7 +40,8 @@ class DashboardTest(unittest.TestCase):
         evaluation = self.evaluate()
         document = build(self.root, run_ids=self.ids)
         day = document["days"][0]
-        self.assertEqual(day["stats"], {"candidates":3,"evaluated":3,"hits":2,"misses":1,"unknown":0,"hit_rate":2/3})
+        self.assertEqual(day["stats"], {"candidates":3,"evaluated":3,"hits":2,"misses":1,"unknown":0,"hit_rate":2/3,
+                                      "negative_misses":0,"misses_close_unknown":1,"worst_miss_close_return":None})
         self.assertEqual(len(read_json(Path(evaluation["path"]) / "outcomes.json")),6)
         self.assertEqual(day["next_session"],self.fixture["next_session"])
         self.assertFalse(day["prediction_eligible"])
@@ -174,3 +175,91 @@ class DashboardTest(unittest.TestCase):
         self.assertNotEqual(first["evaluation_id"],second["evaluation_id"])
         with self.assertRaisesRegex(ValueError,"conflicting"):
             build(self.root,run_ids=self.ids)
+
+    def close_document(self, evaluated):
+        return build(self.root,run_ids=self.ids,
+                     future_refs={evaluated["evaluation_id"]:str((self.input / "future.json").relative_to(self.root))})
+
+    def test_close_return_uses_prior_close_not_open_and_respects_split(self):
+        future=read_json(self.input / "future.json")
+        bar=next(b for b in future["bars"] if b["instrument_id"]=="TSE:0001")
+        bar.update(adj_open=50,adj_high=52,adj_low=47,adj_close=48.5,prior_close_rebase_factor=.5)
+        write_json(self.input / "future.json",future)
+        evaluated=self.evaluate()
+        day=self.close_document(evaluated)["days"][0]
+        candidate=next(r for r in day["candidates"] if r["symbol"]=="0001")
+        self.assertIs(candidate["hit"],False)
+        self.assertAlmostEqual(candidate["close_return"],97/99-1)
+        self.assertNotAlmostEqual(candidate["close_return"],48.5/50-1)
+        self.assertEqual(day["stats"]["negative_misses"],1)
+        self.assertAlmostEqual(day["stats"]["worst_miss_close_return"],97/99-1)
+
+    def test_high_hit_can_close_negative_without_becoming_negative_miss(self):
+        future=read_json(self.input / "future.json")
+        future["bars"][0]["adj_close"]=95
+        write_json(self.input / "future.json",future)
+        day=self.close_document(self.evaluate())["days"][0]
+        row=next(r for r in day["candidates"] if r["symbol"]=="0001")
+        self.assertIs(row["hit"],True)
+        self.assertLess(row["close_return"],0)
+        self.assertEqual(day["stats"]["negative_misses"],0)
+        self.assertIsNone(day["stats"]["worst_miss_close_return"])
+
+    def test_missing_close_or_reference_is_unknown_not_a_decline(self):
+        future=read_json(self.input / "future.json")
+        future["bars"][2]["adj_close"]=None
+        write_json(self.input / "future.json",future)
+        evaluated=self.evaluate()
+        day=self.close_document(evaluated)["days"][0]
+        row=next(r for r in day["candidates"] if r["symbol"]=="0003")
+        self.assertIs(row["hit"],False)
+        self.assertIsNone(row["close_return"])
+        self.assertEqual(day["stats"]["misses_close_unknown"],1)
+        without=build(self.root,run_ids=self.ids)["days"][0]
+        self.assertTrue(all(r["close_return"] is None for r in without["candidates"]))
+
+    def test_tampered_close_input_is_rejected(self):
+        evaluated=self.evaluate()
+        future=read_json(self.input / "future.json")
+        future["bars"][0]["adj_close"]=1
+        write_json(self.input / "future.json",future)
+        with self.assertRaisesRegex(ValueError,"close input hash"):
+            self.close_document(evaluated)
+
+    def test_native_close_uses_saved_service_reference(self):
+        evaluated=self.evaluate()
+        write_json(self.root / "data/operations/service_jobs/daily.json",
+                   {"run_id":self.ids[0],"status":"SUCCEEDED","evaluations":[{
+                       "evaluation_id":evaluated["evaluation_id"],
+                       "future_ref":str((self.input / "future.json").relative_to(self.root))}]})
+        day=build(self.root)["days"][0]
+        self.assertTrue(all(r["close_return"] is not None for r in day["candidates"]))
+
+    def test_legacy_daily_reference_uses_only_exact_hash_archive(self):
+        self.evaluate()
+        archive=self.root / "data/operations/evaluation_inputs"
+        matching=archive / "second" / self.ids[0] / "future.json"
+        matching.parent.mkdir(parents=True)
+        matching.write_bytes((self.input / "future.json").read_bytes())
+        wrong=read_json(self.input / "future.json")
+        wrong["bars"][0]["adj_close"]=1
+        write_json(archive / "first" / self.ids[0] / "future.json",wrong)
+        write_json(self.root / "data/operations/service_jobs/legacy.json",
+                   {"run_id":self.ids[0],"status":"SUCCEEDED","evaluations":[]})
+        day=build(self.root)["days"][0]
+        self.assertTrue(all(r["close_return"] is not None for r in day["candidates"]))
+        # No hash match: do not use the wrong archive or search arbitrary input/.
+        matching.unlink()
+        day=build(self.root)["days"][0]
+        self.assertTrue(all(r["close_return"] is None for r in day["candidates"]))
+
+    def test_negative_summary_excludes_zero_unknown_and_hits(self):
+        rows=[{"hit":False,"close_return":-.03},{"hit":False,"close_return":-.09},
+              {"hit":False,"close_return":0},{"hit":False,"close_return":.04},
+              {"hit":False,"close_return":None},{"hit":True,"close_return":-.5},
+              {"hit":None,"close_return":None}]
+        result=summarize(rows)
+        self.assertEqual(result["negative_misses"],2)
+        self.assertEqual(result["misses_close_unknown"],1)
+        self.assertEqual(result["worst_miss_close_return"],-.09)
+        self.assertEqual(result["hit_rate"],1/6)

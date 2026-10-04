@@ -1,13 +1,15 @@
 """Read-only, allowlisted dashboard exports. No market fetch, model call or scoring change."""
 from __future__ import annotations
 
+import json
 import re
+from decimal import Decimal
 from pathlib import Path
 
 from .common import canonical, digest, read_json, write_json
 from .pipeline import _verified_manifest, _verified_snapshot
 
-VERSION = "dashboard-v1"
+VERSION = "dashboard-v2"
 GRADES = {"synthetic", "reconstructed", "observed", "vendor_pit"}
 RUN = re.compile(r"run-[0-9a-f]{20}\Z")
 
@@ -44,21 +46,85 @@ def _evaluation(directory: Path, run_id: str) -> tuple[dict | None, list[dict]]:
 def summarize(candidates: list[dict]) -> dict:
     valid = [row for row in candidates if isinstance(row["hit"], bool)]
     hits = sum(row["hit"] for row in valid)
+    misses = [row for row in valid if not row["hit"]]
+    declines = [row["close_return"] for row in misses if row.get("close_return") is not None and row["close_return"] < 0]
     return {"candidates": len(candidates), "evaluated": len(valid), "hits": hits,
             "misses": len(valid) - hits, "unknown": len(candidates) - len(valid),
-            "hit_rate": hits / len(valid) if valid else None}
+            "hit_rate": hits / len(valid) if valid else None,
+            "negative_misses": len(declines),
+            "misses_close_unknown": sum(row.get("close_return") is None for row in misses),
+            "worst_miss_close_return": min(declines, default=None)}
 
 
-def build(root: Path, *, run_ids: list[str] | None = None, days: int = 90) -> dict:
+def _close_returns(root: Path, snapshot: dict, evaluation: dict | None, refs: dict) -> tuple[dict, str | None]:
+    """Close versus prior close, from the exact archived evaluation input only."""
+    reference = refs.get(evaluation["evaluation_id"]) if evaluation else None
+    # Older daily receipts predate future_ref. Search only that run's daily
+    # evaluation archive, never experimental/holdout inputs or mutable market data.
+    if not reference and evaluation:
+        archive = root / "data/operations/evaluation_inputs"
+        for candidate in sorted(archive.glob("*/" + evaluation["source_run_id"] + "/future.json")):
+            if not candidate.resolve().is_relative_to(root.resolve()):
+                raise ValueError("dashboard future reference outside project")
+            if digest(candidate.read_bytes()) == evaluation["future_hash"]:
+                reference = str(candidate.relative_to(root))
+                break
+    if not reference:
+        return {}, None
+    path = (root / reference).resolve()
+    if not path.is_relative_to(root.resolve()):
+        raise ValueError("dashboard future reference outside project")
+    if not path.is_file():
+        return {}, None
+    raw = path.read_bytes()
+    if digest(raw) != evaluation["future_hash"]:
+        raise ValueError("dashboard close input hash mismatch")
+    future = json.loads(raw)
+    session = snapshot["target_session"]
+    calendar = future["calendar"]
+    following = next((day for day in calendar if day > session), None)
+    expected = next((day for day in snapshot["data"]["calendar"] if day > session), None)
+    if (future["data_grade"] != snapshot["data_grade"] or calendar != sorted(set(calendar))
+            or following != expected):
+        raise ValueError("dashboard close input grade/calendar differs")
+    keys = [(b["instrument_id"], b["session_date"]) for b in future["bars"]]
+    if len(keys) != len(set(keys)) or any(day <= session for _, day in keys):
+        raise ValueError("dashboard close input duplicate or decision-date bar")
+    if following is None or following > evaluation["through"]:
+        return {}, digest(raw)
+    prior = {b["instrument_id"]: b for b in snapshot["data"]["bars"] if b["session_date"] == session}
+    def positive(value):
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            return None
+        number = Decimal(str(value))
+        return number if number.is_finite() and number > 0 else None
+    returns = {}
+    for bar in future["bars"]:
+        base = prior.get(bar["instrument_id"])
+        if bar["session_date"] != following or base is None:
+            continue
+        if any(b.get("bar_status") != "ok" or b.get("adjustment_basis") != "split_only" for b in (base, bar)):
+            continue
+        close, previous, factor = map(positive, (bar.get("adj_close"), base.get("adj_close"), bar.get("prior_close_rebase_factor")))
+        if all(value is not None for value in (close, previous, factor)):
+            returns[bar["instrument_id"]] = float(close / (previous * factor) - 1)
+    return returns, digest(raw)
+
+
+def build(root: Path, *, run_ids: list[str] | None = None, days: int = 90, future_refs: dict[str, str] | None = None) -> dict:
     """Native mode reads service receipts only, excluding standalone experiments/replays."""
     if not 1 <= days <= 366:
         raise ValueError("dashboard retention must be 1..366 calendar days")
     receipts = {}
+    refs = dict(future_refs or {})
     if run_ids is None:
         for path in sorted((root / "data/operations/service_jobs").glob("*.json")):
             receipt = read_json(path)
             if receipt.get("status", "").startswith("SUCCEEDED"):
                 receipts[receipt["run_id"]] = receipt
+                for entry in receipt.get("evaluations", []):
+                    if entry.get("future_ref"):
+                        refs.setdefault(entry["evaluation_id"], entry["future_ref"])
         run_ids = list(receipts)
     from datetime import date, timedelta
     selected = {}
@@ -89,6 +155,7 @@ def build(root: Path, *, run_ids: list[str] | None = None, days: int = 90) -> di
         evaluation, outcomes = _evaluation(directory, run_id)
         if evaluation and evaluation["data_grade"] != manifest["data_grade"]:
             raise ValueError("evaluation data grade differs")
+        close_returns, close_input_hash = _close_returns(root, snapshot, evaluation, refs)
         outcome_map = {row["decision_id"]: row for row in outcomes}
         decisions = read_json(directory / "decisions.json")
         if len({d["decision_id"] for d in decisions}) != len(decisions):
@@ -109,6 +176,7 @@ def build(root: Path, *, run_ids: list[str] | None = None, days: int = 90) -> di
                                "rank": row["rank"], "market": instruments[row["instrument_id"]]["market"],
                                "hit": hit, "outcome_status": outcome["outcome_status"] if outcome else "pending",
                                "high_return": outcome["discovery_return"] if hit is not None else None,
+                               "close_return": close_returns.get(row["instrument_id"]) if hit is not None else None,
                                "execution_status": outcome["execution_status"] if outcome else "unknown"})
         next_days = [d for d in snapshot["data"]["calendar"] if d > manifest["target_session"]]
         receipt = receipts.get(run_id, {})
@@ -127,7 +195,8 @@ def build(root: Path, *, run_ids: list[str] | None = None, days: int = 90) -> di
                        "evaluated_through": evaluation["through"] if evaluation else None,
                        "stats": summarize(candidates), "candidates": candidates})
         proofs[run_id] = {"manifest_hash": digest((directory / "run_manifest.json").read_bytes()),
-                          "evaluation_id": evaluation["evaluation_id"] if evaluation else None}
+                          "evaluation_id": evaluation["evaluation_id"] if evaluation else None,
+                          "close_input_hash": close_input_hash}
     # Public document includes only explicit fields above, never receipts, original paths or model text.
     document = {"schema_version": 1, "export_version": VERSION, "scope": "price_baseline",
                 "updated_at": max([d["completed_at"] for d in result] +
@@ -153,7 +222,7 @@ def validate_document(document: dict) -> None:
     day_keys = {"session", "next_session", "as_of", "completed_at", "data_grade", "strategy_id",
                 "strategy_version", "threshold", "prediction_eligible", "history_only", "batch_status",
                 "missing_target_count", "result_saved", "evaluated_at", "evaluated_through", "stats", "candidates"}
-    row_keys = {"symbol", "name", "stage", "rank", "market", "hit", "outcome_status", "high_return", "execution_status"}
+    row_keys = {"symbol", "name", "stage", "rank", "market", "hit", "outcome_status", "high_return", "close_return", "execution_status"}
     if set(document) != {"schema_version", "export_version", "scope", "updated_at", "days"} or document["schema_version"] != 1 or document["scope"] != "price_baseline":
         raise ValueError("unexpected dashboard schema or fields")
     for day in document["days"]:
@@ -162,6 +231,9 @@ def validate_document(document: dict) -> None:
         for row in day["candidates"]:
             if set(row) != row_keys or row["hit"] is not None and not isinstance(row["hit"], bool):
                 raise ValueError("unexpected dashboard candidate fields")
+            close = row["close_return"]
+            if close is not None and (isinstance(close, bool) or not isinstance(close, (int, float)) or row["hit"] is None):
+                raise ValueError("invalid dashboard close return")
         if day["stats"] != summarize(day["candidates"]):
             raise ValueError("dashboard aggregate differs from candidates")
     canonical(document)

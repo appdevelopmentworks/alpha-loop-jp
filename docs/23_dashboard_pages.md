@@ -9,7 +9,10 @@
 - 最新候補数、候補日、翌営業日、結果CSVの保存済み/評価待ち、更新日時、欠損数。
 - 1週間/2週間/1か月/指定期間の件数、日別グラフ、日次一覧、銘柄検索、表示項目のCSV保存。
 - 対象は日次サービスが保存した**価格基準候補**。自己改善のshadow/ACTIVE候補や保護された比較期間の途中成績は取得しない。画面に条件版・データ区分を表示する。
-- 的中は保存済みの `discovery_hit`（基準版では翌営業日の分割調整高値が前日終値比10%以上）。終値上昇率や売買収益とは区別する。終値上昇率の表示はこの版では未実装。
+- 的中は保存済みの `discovery_hit`（基準版では翌営業日の分割調整高値が前日終値比10%以上）。終値騰落率や売買収益とは区別する。
+- 終値騰落率は「翌営業日の分割調整終値 ÷ (候補日の分割調整終値 × 翌日のprior_close_rebase_factor) − 1」。日次receiptの評価参照から原本を読み、保存評価のfuture_hashと一致する場合だけPython/Decimalで算出。古いreceiptに参照がなければ該当runの日次評価原本保存先だけからhash一致を探す。実験/保護期間の入力や現在の市場データは検索しない。判定条件・元の評価CSVは変更しない。原本/終値/分割調整がない場合は「—」とし、値を推定しない。
+- 「不的中のうち終値下落」件数、最大下落率、日別内訳、銘柄別の符号付き騰落率を表示。下落銘柄は赤い表示にし、「不的中・下落のみ」で下落率の大きい順に絞り込める。終値不明件数は別表示。高値で的中して終値で下落した銘柄も終値欄には表示し、不的中・下落件数へは含めない。
+- 最大下落は不的中・下落候補の終値騰落率の最小値で、日中の安値や実現損益ではない。表示用結果CSVにも終値騰落率（比率値）と下落区分を追加。これはdashboard-v2の表示拡張であり、M5の条件・採否・収益評価は変更しない。
 - 候補のdecision_idだけを全母集団の結果へ結合する。未評価/欠損/調整不明は分母から除外。期間の的中率は延べ的中数÷延べ評価可能候補数。日別率の平均は使わない。
 - 同一候補日・データ区分・条件版・閾値では最初に封印された実行を採用。replayや単独の研究実行は日次集計へ入れない。異なる版・データ区分・事前予測算入可否は画面で別集計する。
 - CSVボタンは表示用の項目を出力する。元の候補/結果CSV、根拠・原本はローカルへ保存したままで、Webに同梱しない。候補ゼロでもヘッダー付きCSVを保存可能。
@@ -85,7 +88,7 @@ Copy-Item configs/dashboard_publication.example.json configs/dashboard_publicati
 
 `python -S scripts/verify_dashboard.py`は合成22日分の画面、実結果のローカル出力、公開DRY_RUN、元の候補CSV・数値コード保持を確認する。証跡は `data/operations/dashboard_acceptance.json`。既存Hermesへの同期確認は `scripts/verify_dashboard_deployment.py`、証跡は `data/operations/dashboard_deployment.json`。[検証記録](04_validation.md)を参照。
 
-GitHub初回Push・公開元・ビルドと公開画面の表示/期間切替は確認済み。証跡は `data/operations/dashboard/publication.json`、`data/operations/dashboard/pages_setup.json`、`data/operations/dashboard_published.png`。実データの公開権利確認、新版ラッパー配置後の実定時更新、終値上昇率・自己改善版比較の可視化は残条件。CSV生成処理は画面側テストで確認済みだが、公開画面の保存操作では作業用ブラウザーのdownload完了通知を取得できず、ファイル保存の実確認は未了。
+GitHub初回Push・公開元・ビルドと公開画面の表示/期間切替は確認済み。証跡は `data/operations/dashboard/publication.json`、`data/operations/dashboard/pages_setup.json`、`data/operations/dashboard_published.png`。終値騰落率の拡張はPython23件、画面側18検査、合成22日/ローカル実結果4日の生成、元の候補CSV23ファイルと数値コード保持を確認。拡張版の公開commitは `87d9c52159b6976b4e84caa25ecc35cf45775036`。実データの公開権利確認、新版ラッパー配置後の実定時更新、自己改善版比較の可視化は残条件。CSV生成処理は画面側テストで確認済みだが、公開画面の保存操作では作業用ブラウザーのdownload完了通知を取得できず、ファイル保存の実確認は未了。
 
 ## 公式資料
 
