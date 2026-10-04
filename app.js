@@ -8,11 +8,16 @@
   const executionLabel = {unknown:"不明", unfilled:"未約定", limit_up:"ストップ高", halted:"売買停止", proxy_only:"価格proxyのみ", cost_unset:"費用未設定"};
   const cohortKey = day => JSON.stringify([day.data_grade, day.strategy_id, day.strategy_version, day.threshold,
     ["observed","vendor_pit"].includes(day.data_grade) ? day.prediction_eligible : false]);
+  const negativeMiss = row => row.hit === false && Number.isFinite(row.close_return) && row.close_return < 0;
+  const signedPercent = n => !Number.isFinite(n) ? "—" : (n>0?"+":"")+(n*100).toFixed(2)+"%";
   const stats = days => {
     const rows = days.flatMap(d => d.candidates), known = rows.filter(r => typeof r.hit === "boolean");
     const hits = known.filter(r => r.hit).length;
+    const declines = known.filter(negativeMiss).map(r=>r.close_return);
     return {candidates:rows.length, evaluated:known.length, hits, misses:known.length-hits,
-      unknown:rows.length-known.length, hit_rate:known.length ? hits/known.length : null};
+      unknown:rows.length-known.length, hit_rate:known.length ? hits/known.length : null,
+      negative_misses:declines.length, misses_close_unknown:known.filter(r=>!r.hit&&!Number.isFinite(r.close_return)).length,
+      worst_miss_close_return:declines.length?Math.min(...declines):null};
   };
   const filterDays = (days, cohort, start, end) => days.filter(d => cohortKey(d) === cohort && d.session >= start && d.session <= end);
   const shiftDate = (value, delta) => { const date = new Date(value + "T00:00:00Z"); date.setUTCDate(date.getUTCDate()+delta); return date.toISOString().slice(0,10); };
@@ -21,7 +26,7 @@
     if (typeof value === "string" && /^[=+\-@\t\r\n]/.test(text)) text = "'"+text;
     return '"'+text.replaceAll('"','""')+'"';
   };
-  if (typeof module !== "undefined") module.exports = {stats, cohortKey, filterDays, shiftDate, csvCell};
+  if (typeof module !== "undefined") module.exports = {stats, cohortKey, filterDays, shiftDate, csvCell, negativeMiss, signedPercent};
   if (typeof document === "undefined") return;
   const $ = id => document.getElementById(id);
   const number = n => n.toLocaleString("ja-JP");
@@ -33,11 +38,11 @@
 
   function download(day, results) {
     const columns = ["候補日","翌営業日","データ区分","条件版","コード","銘柄名","市場","候補区分"];
-    if (results) columns.push("判定状態","的中","翌日高値上昇率","約定情報");
+    if (results) columns.push("判定状態","的中","翌日高値上昇率","翌日終値騰落率_前日終値比","不的中かつ終値下落","約定情報");
     const lines = [columns.map(csvCell).join(",")];
     for (const r of day.candidates) {
       const values = [day.session,day.next_session,day.data_grade,day.strategy_version,r.symbol,r.name,r.market,r.stage];
-      if (results) values.push(r.outcome_status,r.hit,r.high_return,r.execution_status);
+      if (results) values.push(r.outcome_status,r.hit,r.high_return,r.close_return,typeof r.hit === "boolean" && Number.isFinite(r.close_return)?negativeMiss(r):null,r.execution_status);
       lines.push(values.map(csvCell).join(","));
     }
     const url = URL.createObjectURL(new Blob(["\uFEFF"+lines.join("\r\n")+"\r\n"],{type:"text/csv;charset=utf-8"}));
@@ -50,17 +55,18 @@
     if (!days.length) { $("chart").append(node("p","この期間には保存データがありません。","empty")); return; }
     const ns="http://www.w3.org/2000/svg", width=Math.max(600,days.length*44), height=215, bottom=180, top=18;
     const svg=document.createElementNS(ns,"svg"); svg.setAttribute("viewBox",`0 0 ${width} ${height}`);
-    svg.setAttribute("role","img"); svg.setAttribute("aria-label","日別の的中、不的中、未評価件数。数値は下の日次一覧でも確認できます。");
+    svg.setAttribute("role","img"); svg.setAttribute("aria-label","日別の的中、不的中のうち終値下落、その他の不的中、未評価件数。数値は下の日次一覧でも確認できます。");
     if (days.length>16) svg.style.minWidth=width+"px";
     const make=(tag,attributes,label)=>{const e=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attributes))e.setAttribute(k,v);if(label!=null)e.textContent=label;svg.append(e);return e;};
     const maximum=Math.max(1,...days.map(d=>d.stats.candidates));
     for(let i=0;i<=4;i++){const y=bottom-(bottom-top)*i/4;make("line",{x1:35,x2:width-12,y1:y,y2:y,stroke:"#e7edf1"});make("text",{x:26,y:y+3,"text-anchor":"end"},String(Math.round(maximum*i/4)));}
     const spacing=(width-55)/days.length, barWidth=Math.min(28,spacing*.6);
     days.forEach((day,i)=>{
+      const s=stats([day]);s.other_misses=s.misses-s.negative_misses;
       const x=40+i*spacing+(spacing-barWidth)/2;let y=bottom;
-      for(const [key,color] of [["hits","#099788"],["misses","#8ba3b9"],["unknown","#e0e7ee"]]){
-        const h=day.stats[key]/maximum*(bottom-top);y-=h;const rect=make("rect",{x,y,width:barWidth,height:h,fill:color,rx:2});
-        const title=document.createElementNS(ns,"title");title.textContent=`${day.session}：的中 ${day.stats.hits} / 不的中 ${day.stats.misses} / 未評価・不明 ${day.stats.unknown}`;rect.append(title);
+      for(const [key,color] of [["hits","#099788"],["negative_misses","#b34b54"],["other_misses","#8ba3b9"],["unknown","#e0e7ee"]]){
+        const h=s[key]/maximum*(bottom-top);y-=h;const rect=make("rect",{x,y,width:barWidth,height:h,fill:color,rx:2});
+        const title=document.createElementNS(ns,"title");title.textContent=`${day.session}：的中 ${s.hits} / 不的中 ${s.misses}（終値下落 ${s.negative_misses}、最大 ${signedPercent(s.worst_miss_close_return)}） / 未評価・不明 ${s.unknown}`;rect.append(title);
       }
       if(days.length<=16||i%Math.ceil(days.length/12)===0)make("text",{x:x+barWidth/2,y:202,"text-anchor":"middle"},day.session.slice(5).replace("-","/"));
     });
@@ -73,15 +79,18 @@
     text("details-heading",day.session+" の候補");
     text("detail-note",`${gradeLabel[day.data_grade]} · 価格基準 ${day.strategy_version} · ${day.candidates.length}銘柄。日次一覧の候補日を押すと切り替わります。`);
     const query=$("search").value.trim().toLowerCase();
-    const rows=day.candidates.filter(r=>(r.symbol+" "+r.name).toLowerCase().includes(query));
+    const declinesOnly=$("negative-only").checked;
+    const rows=day.candidates.filter(r=>(r.symbol+" "+r.name).toLowerCase().includes(query)&&(!declinesOnly||negativeMiss(r)));
+    if(declinesOnly)rows.sort((a,b)=>a.close_return-b.close_return);
     for(const r of rows){
-      const tr=node("tr"), company=node("td");company.append(node("strong",r.symbol),node("small",r.name));tr.append(company);
+      const tr=node("tr",null,negativeMiss(r)?"decline-row":""), company=node("td");company.append(node("strong",r.symbol),node("small",r.name));tr.append(company);
       tr.append(node("td",marketLabel[r.market]||r.market),node("td",stageLabel[r.stage]||r.stage));
       tr.append(node("td",percent(r.high_return),r.high_return!=null ? r.high_return>=0 ? "positive":"negative" : ""));
-      const verdict=node("td");verdict.append(node("span",r.hit===true?"的中":r.hit===false?"不的中":outcomeLabel[r.outcome_status]||"不明",r.hit===true?"badge hit":r.hit===false?"badge":"badge pending"));
+      tr.append(node("td",signedPercent(r.close_return),Number.isFinite(r.close_return)?r.close_return<0?"negative close-return":"positive close-return":"muted"));
+      const verdict=node("td");verdict.append(node("span",r.hit===true?"的中":negativeMiss(r)?"不的中・下落":r.hit===false?"不的中":outcomeLabel[r.outcome_status]||"不明",r.hit===true?"badge hit":negativeMiss(r)?"badge decline":r.hit===false?"badge":"badge pending"));
       tr.append(verdict,node("td",executionLabel[r.execution_status]||r.execution_status));$("candidates").append(tr);
     }
-    if(!rows.length){const tr=node("tr"),td=node("td",day.candidates.length?"検索に一致する銘柄はありません。":"候補ゼロ。抽出処理は完了しています。");td.colSpan=6;tr.append(td);$("candidates").append(tr);}
+    if(!rows.length){const tr=node("tr"),td=node("td",day.candidates.length?declinesOnly?"選択日の条件に合う不的中・下落銘柄はありません。終値不明や評価待ちは含めません。":"検索に一致する銘柄はありません。":"候補ゼロ。抽出処理は完了しています。");td.colSpan=7;tr.append(td);$("candidates").append(tr);}
   }
 
   function render() {
@@ -100,16 +109,20 @@
     text("metric-definition",`翌日高値で${(threshold*100).toFixed(0)}%以上上昇`);text("rate",percent(sum.hit_rate));
     text("candidate-total",number(sum.candidates));text("available-days",`保存済み ${days.length}営業日分`);
     text("hit-total",`${sum.hits} / ${sum.evaluated}`);text("miss-total",number(sum.misses));text("unknown-total",number(sum.unknown));
+    text("negative-total",number(sum.negative_misses));
+    text("negative-note",`最大下落 ${signedPercent(sum.worst_miss_close_return)}（終値） / 終値不明 ${sum.misses_close_unknown}件`);
     drawChart(days);
-    const hitEnd=sum.candidates?sum.hits/sum.candidates*360:0, missEnd=sum.candidates?(sum.hits+sum.misses)/sum.candidates*360:0;
-    $("donut").style.background=`conic-gradient(#099788 0deg ${hitEnd}deg,#8ba3b9 ${hitEnd}deg ${missEnd}deg,#e0e7ee ${missEnd}deg 360deg)`;
+    const hitEnd=sum.candidates?sum.hits/sum.candidates*360:0, negativeEnd=sum.candidates?(sum.hits+sum.negative_misses)/sum.candidates*360:0, missEnd=sum.candidates?(sum.hits+sum.misses)/sum.candidates*360:0;
+    $("donut").style.background=`conic-gradient(#099788 0deg ${hitEnd}deg,#b34b54 ${hitEnd}deg ${negativeEnd}deg,#8ba3b9 ${negativeEnd}deg ${missEnd}deg,#e0e7ee ${missEnd}deg 360deg)`;
     $("donut-label").replaceChildren(node("span",percent(sum.hit_rate)),node("small","評価済みの的中率"));
-    text("period-note",`的中 ${sum.hits} / 不的中 ${sum.misses} / 未評価・不明 ${sum.unknown}。実際に保存されている日だけを集計しています。`);
+    text("period-note",`的中 ${sum.hits} / 不的中 ${sum.misses}（終値下落 ${sum.negative_misses}） / 未評価・不明 ${sum.unknown}。不的中の終値不明 ${sum.misses_close_unknown}件。`);
     text("range-label",`${$("start").value} — ${$("end").value}`);$("empty").hidden=days.length!==0;$("history").replaceChildren();
     for(const day of [...days].reverse()){
+      const s=stats([day]);
       const tr=node("tr"), dateCell=node("td"), pick=node("button",day.session,"session-button");
       pick.onclick=()=>{selected=day;renderDetails(day);};dateCell.append(pick,node("small","→ "+(day.next_session||"翌営業日未保存")));tr.append(dateCell);
       tr.append(node("td",number(day.stats.candidates)),node("td",`${day.stats.hits} / ${day.stats.evaluated}`),node("td",percent(day.stats.hit_rate)));
+      const decline=node("td");decline.append(node("strong",`${s.negative_misses} / ${s.misses}`,s.negative_misses?"negative":""),node("small",`最大 ${signedPercent(s.worst_miss_close_return)} / 終値不明 ${s.misses_close_unknown}`));tr.append(decline);
       const status=node("td");status.append(node("span",day.result_saved?"保存済み":"評価待ち",day.result_saved?"badge hit":"badge pending"));
       if(day.stats.unknown)status.append(node("small",`未評価・不明 ${day.stats.unknown}件`));tr.append(status);
       const files=node("td"),candidate=node("button","候補CSV","table-action"),outcome=node("button","結果CSV","table-action");candidate.onclick=()=>download(day,false);outcome.disabled=!day.result_saved;outcome.onclick=()=>download(day,true);files.append(candidate,outcome);tr.append(files);$("history").append(tr);
@@ -134,7 +147,7 @@
       $("cohort").onchange=()=>{cohort=$("cohort").value;selected=null;setPeriod(period);};
       for(const button of document.querySelectorAll("[data-period]"))button.onclick=()=>setPeriod(button.dataset.period);
       for(const id of ["start","end"])$(id).onchange=()=>setPeriod("custom");
-      $("search").oninput=()=>renderDetails(selected);setPeriod(30);
+      $("search").oninput=()=>renderDetails(selected);$("negative-only").onchange=()=>renderDetails(selected);setPeriod(30);
     }catch(error){text("notice","保存データを読み込めませんでした。HTTPで開いているか、公開用データの配置を確認してください。前回の集計値として表示はしません。");$("notice").className="notice error";}
   }
   load();

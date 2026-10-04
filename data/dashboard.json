@@ -5,6 +5,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": 0.06060606060606061,
           "execution_status": "cost_unset",
           "high_return": 0.13131313131313133,
           "hit": true,
@@ -16,6 +17,7 @@
           "symbol": "0001"
         },
         {
+          "close_return": 0.029411764705882353,
           "execution_status": "limit_up",
           "high_return": 0.09803921568627451,
           "hit": false,
@@ -27,6 +29,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": null,
           "execution_status": "unknown",
           "high_return": null,
           "hit": null,
@@ -54,7 +57,10 @@
         "hit_rate": 0.5,
         "hits": 1,
         "misses": 1,
-        "unknown": 1
+        "misses_close_unknown": 0,
+        "negative_misses": 0,
+        "unknown": 1,
+        "worst_miss_close_return": null
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -65,6 +71,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": 0.06060606060606061,
           "execution_status": "cost_unset",
           "high_return": 0.13131313131313133,
           "hit": true,
@@ -76,6 +83,7 @@
           "symbol": "0001"
         },
         {
+          "close_return": 0.029411764705882353,
           "execution_status": "limit_up",
           "high_return": 0.09803921568627451,
           "hit": false,
@@ -87,6 +95,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -114,7 +123,10 @@
         "hit_rate": 0.3333333333333333,
         "hits": 1,
         "misses": 2,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 0,
+        "unknown": 0,
+        "worst_miss_close_return": null
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -125,6 +137,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": -0.020202020202020204,
           "execution_status": "cost_unset",
           "high_return": 0.050505050505050504,
           "hit": false,
@@ -136,7 +149,8 @@
           "symbol": "0001"
         },
         {
-          "execution_status": "limit_up",
+          "close_return": -0.10784313725490197,
+          "execution_status": "cost_unset",
           "high_return": 0.0196078431372549,
           "hit": false,
           "market": "Prime",
@@ -147,6 +161,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -174,7 +189,10 @@
         "hit_rate": 0.0,
         "hits": 0,
         "misses": 3,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 2,
+        "unknown": 0,
+        "worst_miss_close_return": -0.10784313725490197
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -185,6 +203,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": -0.020202020202020204,
           "execution_status": "cost_unset",
           "high_return": 0.050505050505050504,
           "hit": false,
@@ -196,7 +215,8 @@
           "symbol": "0001"
         },
         {
-          "execution_status": "limit_up",
+          "close_return": -0.10784313725490197,
+          "execution_status": "cost_unset",
           "high_return": 0.0196078431372549,
           "hit": false,
           "market": "Prime",
@@ -207,6 +227,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -234,7 +255,10 @@
         "hit_rate": 0.0,
         "hits": 0,
         "misses": 3,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 2,
+        "unknown": 0,
+        "worst_miss_close_return": -0.10784313725490197
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -260,7 +284,10 @@
         "hit_rate": null,
         "hits": 0,
         "misses": 0,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 0,
+        "unknown": 0,
+        "worst_miss_close_return": null
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -271,6 +298,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": 0.06060606060606061,
           "execution_status": "cost_unset",
           "high_return": 0.13131313131313133,
           "hit": true,
@@ -282,6 +310,7 @@
           "symbol": "0001"
         },
         {
+          "close_return": 0.029411764705882353,
           "execution_status": "limit_up",
           "high_return": 0.09803921568627451,
           "hit": false,
@@ -293,6 +322,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -320,7 +350,10 @@
         "hit_rate": 0.3333333333333333,
         "hits": 1,
         "misses": 2,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 0,
+        "unknown": 0,
+        "worst_miss_close_return": null
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -331,6 +364,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": -0.020202020202020204,
           "execution_status": "cost_unset",
           "high_return": 0.050505050505050504,
           "hit": false,
@@ -342,7 +376,8 @@
           "symbol": "0001"
         },
         {
-          "execution_status": "limit_up",
+          "close_return": -0.10784313725490197,
+          "execution_status": "cost_unset",
           "high_return": 0.0196078431372549,
           "hit": false,
           "market": "Prime",
@@ -353,6 +388,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": null,
           "execution_status": "unknown",
           "high_return": null,
           "hit": null,
@@ -380,7 +416,10 @@
         "hit_rate": 0.0,
         "hits": 0,
         "misses": 2,
-        "unknown": 1
+        "misses_close_unknown": 0,
+        "negative_misses": 2,
+        "unknown": 1,
+        "worst_miss_close_return": -0.10784313725490197
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -391,6 +430,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": -0.020202020202020204,
           "execution_status": "cost_unset",
           "high_return": 0.050505050505050504,
           "hit": false,
@@ -402,7 +442,8 @@
           "symbol": "0001"
         },
         {
-          "execution_status": "limit_up",
+          "close_return": -0.10784313725490197,
+          "execution_status": "cost_unset",
           "high_return": 0.0196078431372549,
           "hit": false,
           "market": "Prime",
@@ -413,6 +454,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -440,7 +482,10 @@
         "hit_rate": 0.0,
         "hits": 0,
         "misses": 3,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 2,
+        "unknown": 0,
+        "worst_miss_close_return": -0.10784313725490197
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -451,6 +496,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": 0.06060606060606061,
           "execution_status": "cost_unset",
           "high_return": 0.13131313131313133,
           "hit": true,
@@ -462,6 +508,7 @@
           "symbol": "0001"
         },
         {
+          "close_return": 0.029411764705882353,
           "execution_status": "limit_up",
           "high_return": 0.09803921568627451,
           "hit": false,
@@ -473,6 +520,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -500,7 +548,10 @@
         "hit_rate": 0.3333333333333333,
         "hits": 1,
         "misses": 2,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 0,
+        "unknown": 0,
+        "worst_miss_close_return": null
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -511,6 +562,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": 0.06060606060606061,
           "execution_status": "cost_unset",
           "high_return": 0.13131313131313133,
           "hit": true,
@@ -522,6 +574,7 @@
           "symbol": "0001"
         },
         {
+          "close_return": 0.029411764705882353,
           "execution_status": "limit_up",
           "high_return": 0.09803921568627451,
           "hit": false,
@@ -533,6 +586,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -560,7 +614,10 @@
         "hit_rate": 0.3333333333333333,
         "hits": 1,
         "misses": 2,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 0,
+        "unknown": 0,
+        "worst_miss_close_return": null
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -571,6 +628,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": -0.020202020202020204,
           "execution_status": "cost_unset",
           "high_return": 0.050505050505050504,
           "hit": false,
@@ -582,7 +640,8 @@
           "symbol": "0001"
         },
         {
-          "execution_status": "limit_up",
+          "close_return": -0.10784313725490197,
+          "execution_status": "cost_unset",
           "high_return": 0.0196078431372549,
           "hit": false,
           "market": "Prime",
@@ -593,6 +652,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -620,7 +680,10 @@
         "hit_rate": 0.0,
         "hits": 0,
         "misses": 3,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 2,
+        "unknown": 0,
+        "worst_miss_close_return": -0.10784313725490197
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -631,6 +694,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": -0.020202020202020204,
           "execution_status": "cost_unset",
           "high_return": 0.050505050505050504,
           "hit": false,
@@ -642,7 +706,8 @@
           "symbol": "0001"
         },
         {
-          "execution_status": "limit_up",
+          "close_return": -0.10784313725490197,
+          "execution_status": "cost_unset",
           "high_return": 0.0196078431372549,
           "hit": false,
           "market": "Prime",
@@ -653,6 +718,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -680,7 +746,10 @@
         "hit_rate": 0.0,
         "hits": 0,
         "misses": 3,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 2,
+        "unknown": 0,
+        "worst_miss_close_return": -0.10784313725490197
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -691,6 +760,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": 0.06060606060606061,
           "execution_status": "cost_unset",
           "high_return": 0.13131313131313133,
           "hit": true,
@@ -702,6 +772,7 @@
           "symbol": "0001"
         },
         {
+          "close_return": 0.029411764705882353,
           "execution_status": "limit_up",
           "high_return": 0.09803921568627451,
           "hit": false,
@@ -713,6 +784,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": null,
           "execution_status": "unknown",
           "high_return": null,
           "hit": null,
@@ -740,7 +812,10 @@
         "hit_rate": 0.5,
         "hits": 1,
         "misses": 1,
-        "unknown": 1
+        "misses_close_unknown": 0,
+        "negative_misses": 0,
+        "unknown": 1,
+        "worst_miss_close_return": null
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -751,6 +826,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": 0.06060606060606061,
           "execution_status": "cost_unset",
           "high_return": 0.13131313131313133,
           "hit": true,
@@ -762,6 +838,7 @@
           "symbol": "0001"
         },
         {
+          "close_return": 0.029411764705882353,
           "execution_status": "limit_up",
           "high_return": 0.09803921568627451,
           "hit": false,
@@ -773,6 +850,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -800,7 +878,10 @@
         "hit_rate": 0.3333333333333333,
         "hits": 1,
         "misses": 2,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 0,
+        "unknown": 0,
+        "worst_miss_close_return": null
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -811,6 +892,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": -0.020202020202020204,
           "execution_status": "cost_unset",
           "high_return": 0.050505050505050504,
           "hit": false,
@@ -822,7 +904,8 @@
           "symbol": "0001"
         },
         {
-          "execution_status": "limit_up",
+          "close_return": -0.10784313725490197,
+          "execution_status": "cost_unset",
           "high_return": 0.0196078431372549,
           "hit": false,
           "market": "Prime",
@@ -833,6 +916,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -860,7 +944,10 @@
         "hit_rate": 0.0,
         "hits": 0,
         "misses": 3,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 2,
+        "unknown": 0,
+        "worst_miss_close_return": -0.10784313725490197
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -871,6 +958,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": -0.020202020202020204,
           "execution_status": "cost_unset",
           "high_return": 0.050505050505050504,
           "hit": false,
@@ -882,7 +970,8 @@
           "symbol": "0001"
         },
         {
-          "execution_status": "limit_up",
+          "close_return": -0.10784313725490197,
+          "execution_status": "cost_unset",
           "high_return": 0.0196078431372549,
           "hit": false,
           "market": "Prime",
@@ -893,6 +982,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -920,7 +1010,10 @@
         "hit_rate": 0.0,
         "hits": 0,
         "misses": 3,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 2,
+        "unknown": 0,
+        "worst_miss_close_return": -0.10784313725490197
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -931,6 +1024,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": 0.06060606060606061,
           "execution_status": "cost_unset",
           "high_return": 0.13131313131313133,
           "hit": true,
@@ -942,6 +1036,7 @@
           "symbol": "0001"
         },
         {
+          "close_return": 0.029411764705882353,
           "execution_status": "limit_up",
           "high_return": 0.09803921568627451,
           "hit": false,
@@ -953,6 +1048,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -980,7 +1076,10 @@
         "hit_rate": 0.3333333333333333,
         "hits": 1,
         "misses": 2,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 0,
+        "unknown": 0,
+        "worst_miss_close_return": null
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -991,6 +1090,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": 0.06060606060606061,
           "execution_status": "cost_unset",
           "high_return": 0.13131313131313133,
           "hit": true,
@@ -1002,6 +1102,7 @@
           "symbol": "0001"
         },
         {
+          "close_return": 0.029411764705882353,
           "execution_status": "limit_up",
           "high_return": 0.09803921568627451,
           "hit": false,
@@ -1013,6 +1114,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -1040,7 +1142,10 @@
         "hit_rate": 0.3333333333333333,
         "hits": 1,
         "misses": 2,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 0,
+        "unknown": 0,
+        "worst_miss_close_return": null
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -1051,6 +1156,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": -0.020202020202020204,
           "execution_status": "cost_unset",
           "high_return": 0.050505050505050504,
           "hit": false,
@@ -1062,7 +1168,8 @@
           "symbol": "0001"
         },
         {
-          "execution_status": "limit_up",
+          "close_return": -0.10784313725490197,
+          "execution_status": "cost_unset",
           "high_return": 0.0196078431372549,
           "hit": false,
           "market": "Prime",
@@ -1073,6 +1180,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": null,
           "execution_status": "unknown",
           "high_return": null,
           "hit": null,
@@ -1100,7 +1208,10 @@
         "hit_rate": 0.0,
         "hits": 0,
         "misses": 2,
-        "unknown": 1
+        "misses_close_unknown": 0,
+        "negative_misses": 2,
+        "unknown": 1,
+        "worst_miss_close_return": -0.10784313725490197
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -1111,6 +1222,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": -0.020202020202020204,
           "execution_status": "cost_unset",
           "high_return": 0.050505050505050504,
           "hit": false,
@@ -1122,7 +1234,8 @@
           "symbol": "0001"
         },
         {
-          "execution_status": "limit_up",
+          "close_return": -0.10784313725490197,
+          "execution_status": "cost_unset",
           "high_return": 0.0196078431372549,
           "hit": false,
           "market": "Prime",
@@ -1133,6 +1246,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -1160,7 +1274,10 @@
         "hit_rate": 0.0,
         "hits": 0,
         "misses": 3,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 2,
+        "unknown": 0,
+        "worst_miss_close_return": -0.10784313725490197
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -1171,6 +1288,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": 0.06060606060606061,
           "execution_status": "cost_unset",
           "high_return": 0.13131313131313133,
           "hit": true,
@@ -1182,6 +1300,7 @@
           "symbol": "0001"
         },
         {
+          "close_return": 0.029411764705882353,
           "execution_status": "limit_up",
           "high_return": 0.09803921568627451,
           "hit": false,
@@ -1193,6 +1312,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": 0.01,
           "execution_status": "cost_unset",
           "high_return": 0.04,
           "hit": false,
@@ -1220,7 +1340,10 @@
         "hit_rate": 0.3333333333333333,
         "hits": 1,
         "misses": 2,
-        "unknown": 0
+        "misses_close_unknown": 0,
+        "negative_misses": 0,
+        "unknown": 0,
+        "worst_miss_close_return": null
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
@@ -1231,6 +1354,7 @@
       "batch_status": "SUCCEEDED",
       "candidates": [
         {
+          "close_return": null,
           "execution_status": "unknown",
           "high_return": null,
           "hit": null,
@@ -1242,6 +1366,7 @@
           "symbol": "0001"
         },
         {
+          "close_return": null,
           "execution_status": "unknown",
           "high_return": null,
           "hit": null,
@@ -1253,6 +1378,7 @@
           "symbol": "0002"
         },
         {
+          "close_return": null,
           "execution_status": "unknown",
           "high_return": null,
           "hit": null,
@@ -1280,14 +1406,17 @@
         "hit_rate": null,
         "hits": 0,
         "misses": 0,
-        "unknown": 3
+        "misses_close_unknown": 0,
+        "negative_misses": 0,
+        "unknown": 3,
+        "worst_miss_close_return": null
       },
       "strategy_id": "price_baseline",
       "strategy_version": "1.1.0",
       "threshold": 0.1
     }
   ],
-  "export_version": "dashboard-v1",
+  "export_version": "dashboard-v2",
   "schema_version": 1,
   "scope": "price_baseline",
   "updated_at": "2026-10-02T20:00:00+09:00"
