@@ -3031,7 +3031,7 @@
     },
     {
       "as_of": "2026-10-08T21:04:01+09:00",
-      "batch_status": "SUCCEEDED_WITH_AI_FAILURE",
+      "batch_status": "SUCCEEDED_WITH_GAPS",
       "candidates": [
         {
           "close_return": null,
